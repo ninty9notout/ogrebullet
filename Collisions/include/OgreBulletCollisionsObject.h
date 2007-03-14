@@ -116,3 +116,4 @@ namespace OgreBulletCollisions
     // -------------------------------------------------------------------------
 }
 #endif //_OGREBULLETCOLLISIONS_CollisionObject_H
+

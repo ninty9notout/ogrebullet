@@ -48,3 +48,4 @@ namespace OgreBulletDynamics
     };
 }
 #endif //_OGREBULLETDYNAMICS_PhysicState_H
+

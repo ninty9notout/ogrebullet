@@ -113,8 +113,8 @@ namespace OgreBulletDynamics
         // update wheels when needed.
         void setTransform();
 
-        void RaycastVehicle::applyEngineForce (float engineForce, int wheel);
-        void RaycastVehicle::setSteeringValue(float steering, int wheel);
+        void applyEngineForce (float engineForce, int wheel);
+        void setSteeringValue(float steering, int wheel);
 
      protected:
          VehicleTuning                   *mTuning;
@@ -129,3 +129,4 @@ namespace OgreBulletDynamics
     };
 }
 #endif //_OGREBULLETDYNAMICS_RaycastVehicle_H
+

@@ -77,3 +77,4 @@ namespace OgreBulletCollisions
     };
 }
 #endif //_OGREBULLETCOLLISIONS_CollisionRay_H
+

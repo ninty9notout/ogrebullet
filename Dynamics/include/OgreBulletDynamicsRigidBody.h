@@ -91,7 +91,7 @@ namespace OgreBulletDynamics
 
         inline const btTransform &getCenterOfMassTransform() const;
         inline Ogre::Quaternion    getCenterOfMassOrientation () const;
-        inline Ogre::Vector3 RigidBody::getCenterOfMassPosition() const;
+        inline Ogre::Vector3 getCenterOfMassPosition() const;
 
         Ogre::Vector3       getCenterOfMassPivot (const Ogre::Vector3 &pivotPosition) const;
         
@@ -185,3 +185,4 @@ namespace OgreBulletDynamics
     
 }
 #endif //_OGREBULLETDYNAMICS_RigidObject_H
+

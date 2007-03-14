@@ -47,3 +47,4 @@ namespace OgreBulletCollisions
     };
 }
 #endif //_OGREBULLETCOLLISIONS_ObjectState_H
+

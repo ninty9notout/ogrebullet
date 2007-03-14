@@ -171,3 +171,4 @@ namespace OgreBulletCollisions
 }
 
 #endif //__OgreBulletCollisionsDebugContact_H__
+
