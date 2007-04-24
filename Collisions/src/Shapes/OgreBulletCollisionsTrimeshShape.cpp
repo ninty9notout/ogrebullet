@@ -63,7 +63,8 @@ namespace OgreBulletCollisions
             mTriMesh->addTriangle(vertexPos[0], vertexPos[1], vertexPos[2]);
         }
 
-        mShape = new btBvhTriangleMeshShape(mTriMesh);
+		const bool useQuantizedAABB = true;
+        mShape = new btBvhTriangleMeshShape(mTriMesh, useQuantizedAABB);
     }
     // -------------------------------------------------------------------------
     TriangleMeshCollisionShape::~TriangleMeshCollisionShape()
@@ -75,6 +76,7 @@ namespace OgreBulletCollisions
         const int numTris = mTriMesh->getNumTriangles ();
         if (numTris > 0)
         {
+			/*
             for (int currTriIdx = 0; numTris > currTriIdx; currTriIdx++)
             {
                 btMyTriangle myTri = mTriMesh->getTriangle (currTriIdx);
@@ -88,7 +90,8 @@ namespace OgreBulletCollisions
                 //wire->addPoint (BtOgreConverter::to(myTri.m_vert1));
                 //wire->addPoint (BtOgreConverter::to(myTri.m_vert2));
             }
-            return true;
+            return true
+			;*/
         }
         return false;
     }

@@ -78,6 +78,7 @@ namespace OgreBulletCollisions
 
         void drawAabb(const btVector3& from,const btVector3& to,const btVector3& color);
 
+		void	reportErrorWarning(const char* warningString);
 	protected:
         int mDebugMode;
 	};

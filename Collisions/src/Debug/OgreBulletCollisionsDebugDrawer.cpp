@@ -44,6 +44,11 @@ DebugDrawer::~DebugDrawer()
 {
 }
 //------------------------------------------------------------------------------------------------
+void	DebugDrawer::reportErrorWarning(const char* warningString)
+{
+	Ogre::LogManager::getSingleton().getDefaultLog()->logMessage(warningString);
+}
+//------------------------------------------------------------------------------------------------
 void DebugDrawer::setDrawAabb(bool enable)
 { 
     if (enable) 
