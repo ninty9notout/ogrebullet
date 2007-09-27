@@ -64,10 +64,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib OgreBulletCollisions_d.lib OgreBulletDynamics_d.lib libbulletcollision_d.lib libbulletdynamics_d.lib libbulletmath_d.lib"
+				AdditionalDependencies="OIS_d.lib OgreMain_d.lib OgreBulletCollisions_d.lib OgreBulletDynamics_d.lib libbulletcollision_d.lib libbulletdynamics_d.lib libbulletmath_d.lib"
 				OutputFile="$(OutDir)/OgreBulletDynamicsDemo.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\lib\$(ConfigurationName)&quot;;&quot;..\..\..\..\..\..\Ogrenew\OgreMain\lib\$(ConfigurationName)&quot;;&quot;$(BULLET_HOME)\out\$(ConfigurationName)8\libs&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\lib\$(ConfigurationName)&quot;;..\..\..\..\..\..\Ogrenew\lib\;&quot;$(BULLET_HOME)\out\$(ConfigurationName)8\libs&quot;"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -157,10 +157,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib OgreBulletCollisions.lib OgreBulletDynamics.lib libbulletcollision.lib libbulletdynamics.lib libbulletmath.lib"
+				AdditionalDependencies="OIS.lib OgreMain.lib OgreBulletCollisions.lib OgreBulletDynamics.lib libbulletcollision.lib libbulletdynamics.lib libbulletmath.lib"
 				OutputFile="$(OutDir)/OgreBulletDynamicsDemo.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\lib\$(ConfigurationName)&quot;;&quot;..\..\..\..\..\..\Ogrenew\OgreMain\lib\$(ConfigurationName)&quot;;&quot;$(BULLET_HOME)\out\$(ConfigurationName)8\libs&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\lib\$(ConfigurationName)&quot;;..\..\..\..\..\..\Ogrenew\lib\;&quot;$(BULLET_HOME)\out\$(ConfigurationName)8\libs&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -205,10 +205,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\Constraints_Demo.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\main.cpp"
 				>
 			</File>
@@ -228,7 +224,23 @@
 				Name="Common"
 				>
 				<File
+					RelativePath="..\..\..\src\BetaGUI.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Constraints_Demo.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\src\OgreBulletApplication.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\OgreBulletGuiListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\OgreBulletInputListener.cpp"
 					>
 				</File>
 				<File
@@ -262,7 +274,19 @@
 				Name="Common"
 				>
 				<File
+					RelativePath="..\..\..\include\BetaGUI.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\include\OgreBulletApplication.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\include\OgreBulletGuiListener.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\include\OgreBulletInputListener.h"
 					>
 				</File>
 				<File

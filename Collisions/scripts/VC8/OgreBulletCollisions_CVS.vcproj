@@ -39,6 +39,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm110"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;&quot;$(BULLET_HOME)\src&quot;;..\..\..\..\..\Ogrenew\OgreMain\include;..\..\..\..\..\Ogrenew\Samples\Common\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_PRECOMP"

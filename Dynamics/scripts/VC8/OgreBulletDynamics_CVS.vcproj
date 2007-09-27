@@ -39,6 +39,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm111"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\..\Collisions\include;&quot;$(BULLET_HOME)\src&quot;;..\..\..\..\..\Ogrenew\OgreMain\include;..\..\..\..\..\Ogrenew\Samples\Common\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_PRECOMP"
@@ -205,6 +206,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\Constraints\OgreBulletDynamicsConeTwistConstraint.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\Constraints\OgreBulletDynamicsHingeConstraint.cpp"
 					>
 				</File>
@@ -260,6 +265,10 @@
 				>
 				<File
 					RelativePath="..\..\include\Constraints\OgreBulletDynamics6DofConstraint.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Constraints\OgreBulletDynamicsConeTwistConstraint.h"
 					>
 				</File>
 				<File
