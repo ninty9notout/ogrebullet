@@ -1,6 +1,6 @@
 material 23 - Default
 {
-	receive_shadows on
+	receive_shadows off
 	technique
 	{
 		pass
@@ -20,7 +20,7 @@ material 23 - Default
 }
 material 19 - Default
 {
-	receive_shadows on
+	receive_shadows off
 	technique
 	{
 		pass
@@ -40,7 +40,7 @@ material 19 - Default
 }
 material 21 - Default
 {
-	receive_shadows on
+	receive_shadows off
 	technique
 	{
 		pass
@@ -60,7 +60,7 @@ material 21 - Default
 }
 material 14 - Default
 {
-	receive_shadows on
+	receive_shadows off
 	technique
 	{
 		pass
@@ -80,7 +80,7 @@ material 14 - Default
 }
 material 22 - Default
 {
-	receive_shadows on
+	receive_shadows off
 	technique
 	{
 		pass
@@ -100,7 +100,7 @@ material 22 - Default
 }
 material PAN
 {
-	receive_shadows on
+	receive_shadows off
 	technique
 	{
 		pass
