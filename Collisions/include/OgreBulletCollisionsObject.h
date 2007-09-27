@@ -58,6 +58,9 @@ namespace OgreBulletCollisions
         virtual ~Object();
 
         // override Movables
+#if (OGRE_VERSION >=  ((1 << 16) | (5 << 8) | 0)) // must have at least shoggoth (1.5.0)
+		void visitRenderables(Ogre::Renderable::Visitor* visitor, bool debugRenderables);
+#endif
         virtual const Ogre::String& getMovableType() const; 
         virtual void _notifyAttached(Ogre::Node* parent,bool isTagPoint = false);
         //virtual const Ogre::String& getName(void) const {return mName};
@@ -67,8 +70,8 @@ namespace OgreBulletCollisions
         virtual void _updateRenderQueue(Ogre::RenderQueue* queue);
 
 
-        inline const Ogre::Vector3 &getWorldPosition() const {return mRootNode->getWorldPosition ();};
-        inline const Ogre::Quaternion &getWorldOrientation() const {return mRootNode->getWorldOrientation ();};
+        inline const Ogre::Vector3 &getWorldPosition() const {return mRootNode->_getDerivedPosition();};
+		inline const Ogre::Quaternion &getWorldOrientation() const {return mRootNode->_getDerivedOrientation();};
 
         inline void setPosition(const Ogre::Vector3 &p) {mRootNode->setPosition (p);};
         inline void setOrientation(const Ogre::Quaternion &q)  {return mRootNode->setOrientation (q);};
@@ -92,6 +95,8 @@ namespace OgreBulletCollisions
             const Ogre::Vector3 &pos, 
             const Ogre::Quaternion &quat);
         void showDebugShape(bool show);
+
+		Ogre::SceneNode *getRootNode() { return mRootNode; }
 
     protected:
 

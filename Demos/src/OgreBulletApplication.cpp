@@ -237,3 +237,16 @@ void OgreBulletApplication::setupResources(void)
     }
 }
 // -------------------------------------------------------------------------
+void OgreBulletApplication::loadResources(void)
+{
+	ResourceGroupManager *rsm = ResourceGroupManager::getSingletonPtr();
+	StringVector groups = rsm->getResourceGroups();      
+	for (StringVector::iterator it = groups.begin(); it != groups.end(); ++it)
+	{
+		rsm->initialiseResourceGroup((*it));
+	}
+	// Initialise, parse scripts etc
+	//ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+}
+
+// -------------------------------------------------------------------------

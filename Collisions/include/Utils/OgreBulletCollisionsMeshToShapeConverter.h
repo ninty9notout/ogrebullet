@@ -33,6 +33,7 @@ namespace OgreBulletCollisions
     class MeshToShapeConverter
     {
 	public:
+		MeshToShapeConverter(Ogre::Renderable *rend,const Ogre::Matrix4 &transform = Ogre::Matrix4::IDENTITY);
 		MeshToShapeConverter(Ogre::Entity *entity,const Ogre::Matrix4 &transform = Ogre::Matrix4::IDENTITY);
 		MeshToShapeConverter();
 		~MeshToShapeConverter();

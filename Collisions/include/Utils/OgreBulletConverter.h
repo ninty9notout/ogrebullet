@@ -63,7 +63,8 @@ namespace OgreBulletCollisions
 
         static Ogre::Quaternion to(const btQuaternion &Q)
         {
-            return Ogre::Quaternion(Q.x(), Q.y(), Q.z(), Q[3]);
+            return Ogre::Quaternion(Q.w(), Q.x(), Q.y(), Q.z());
+            //return Ogre::Quaternion(Q.x(), Q.y(), Q.z(), Q[3]);
         };
     };
 }

@@ -65,6 +65,7 @@ namespace OgreBulletCollisions
 
 		const bool useQuantizedAABB = true;
         mShape = new btBvhTriangleMeshShape(mTriMesh, useQuantizedAABB);
+
     }
     // -------------------------------------------------------------------------
     TriangleMeshCollisionShape::~TriangleMeshCollisionShape()

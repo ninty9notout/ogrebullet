@@ -37,7 +37,7 @@ namespace OgreBulletCollisions
     class CollisionRayResultCallback 
     {
     public:
-        CollisionRayResultCallback(const Ogre::Ray &ray, CollisionsWorld *world, bool init = true);
+		CollisionRayResultCallback(const Ogre::Ray &ray, CollisionsWorld *world, Ogre::Real max_distance, bool init = true);
 	    virtual ~CollisionRayResultCallback();
 
         btCollisionWorld::RayResultCallback *getBulletRay() const {return mRayResultCallback;}
@@ -45,12 +45,15 @@ namespace OgreBulletCollisions
         bool doesCollide () const;
 
         inline const Ogre::Ray &getRay() const;
+		inline Ogre::Vector3 getRayStartPoint() const;
+		inline Ogre::Vector3 getRayEndPoint() const;
 
     protected:
 
         btCollisionWorld::RayResultCallback   *mRayResultCallback;
         CollisionsWorld                       *mWorld;
         Ogre::Ray                              mRay;
+		Ogre::Real                             mMaxDistance;
 
     };
     // -------------------------------------------------------------------------
@@ -64,7 +67,7 @@ namespace OgreBulletCollisions
     class CollisionClosestRayResultCallback : public CollisionRayResultCallback
     {
     public:
-        CollisionClosestRayResultCallback(const Ogre::Ray &ray, CollisionsWorld *world);
+		CollisionClosestRayResultCallback(const Ogre::Ray &ray, CollisionsWorld *world, Ogre::Real max_distance = 9999999999);
         virtual ~CollisionClosestRayResultCallback(){};
 
         Object *getCollidedObject() const;

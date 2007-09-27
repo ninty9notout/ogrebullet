@@ -57,6 +57,7 @@ protected:
     void createFrameListener(void);
 	// Add the standard resources, plus our own pack
     void setupResources(void);
+	void loadResources(void);
 
     bool frameStarted(const FrameEvent& evt);
     bool frameEnded(const FrameEvent& evt);

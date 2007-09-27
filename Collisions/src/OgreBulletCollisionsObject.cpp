@@ -72,6 +72,7 @@ namespace OgreBulletCollisions
         }
 
         getBulletCollisionWorld()->removeCollisionObject( mObject );
+		getCollisionWorld()->removeObject(this);
 
         delete mObject;        
         delete mShape;
@@ -158,6 +159,14 @@ namespace OgreBulletCollisions
             setOrientation(parent->getOrientation());
         } 
     }
+#if (OGRE_VERSION >=  ((1 << 16) | (5 << 8) | 0)) // must have at least shoggoth (1.5.0)
+    //-----------------------------------------------------------------------
+	void Object::visitRenderables(Renderable::Visitor* visitor, 
+		bool debugRenderables)
+	{
+		//visitor->visit(this, 0, false);
+	}
+#endif
     //-----------------------------------------------------------------------
     const Ogre::String& Object::getMovableType() const
     {

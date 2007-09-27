@@ -51,7 +51,8 @@ namespace OgreBulletDynamics
             *rbA->getBulletRigidBody (),
             *rbB->getBulletRigidBody (), 
             frameInA,
-            frameInB);
+            frameInB,
+			true); // Eric added this because Bullet 2.61 has a new argument (useLinearReferenceFrameA)
     }
     // -------------------------------------------------------------------------
     SixDofConstraint::~SixDofConstraint()

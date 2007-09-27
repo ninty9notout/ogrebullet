@@ -84,6 +84,9 @@ namespace OgreBulletCollisions
 
          ~DebugContactText();
 
+#if (OGRE_VERSION >=  ((1 << 16) | (5 << 8) | 0)) // must have at least shoggoth (1.5.0)
+		void visitRenderables(Renderable::Visitor* visitor, bool debugRenderables);
+#endif
         // Set settings
         void    setPosition(const Ogre::Vector3 &pos);
 

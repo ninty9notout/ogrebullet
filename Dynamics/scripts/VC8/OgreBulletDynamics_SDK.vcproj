@@ -43,10 +43,11 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\..\Collisions\include;&quot;$(BULLET_HOME)\src&quot;;$(OGRE_HOME)\include;$(OGRE_HOME)\Samples\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
-				MinimalRebuild="true"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
-				SmallerTypeCheck="true"
+				SmallerTypeCheck="false"
 				RuntimeLibrary="3"
+				BufferSecurityCheck="false"
 				FloatingPointModel="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="OgreBulletDynamics.h"
@@ -207,6 +208,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\Constraints\OgreBulletDynamicsConeTwistConstraint.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\Constraints\OgreBulletDynamicsHingeConstraint.cpp"
 					>
 				</File>
@@ -262,6 +267,10 @@
 				>
 				<File
 					RelativePath="..\..\include\Constraints\OgreBulletDynamics6DofConstraint.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Constraints\OgreBulletDynamicsConeTwistConstraint.h"
 					>
 				</File>
 				<File

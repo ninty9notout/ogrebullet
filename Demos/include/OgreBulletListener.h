@@ -149,7 +149,8 @@ protected:
 
     int mCurrentShadowTechnique;
     Ogre::Light *mSunLight;
-    Ogre::Light *mLight;
+	Ogre::Light *mLight;
+	Ogre::Light *mLight2;
 
 
     Ogre::Camera            *mCamera;

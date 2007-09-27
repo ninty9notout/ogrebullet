@@ -42,6 +42,9 @@ namespace OgreBulletCollisions
 
         void addObject(Object *obj);
 
+		/// Returns false if obj was not found.
+		bool removeObject(Object *obj);
+
         void discreteCollide();
 
         bool isObjectregistered(Object *) const;
@@ -68,6 +71,8 @@ namespace OgreBulletCollisions
         btCollisionDispatcher*     mDispatcher;
         btAxisSweep3*	           mBroadphase;
         Ogre::AxisAlignedBox       mBounds;
+
+		btDefaultCollisionConfiguration	mDefaultCollisionConfiguration;
 
         std::deque<Object *>        mObjects;
 

@@ -38,6 +38,7 @@ http://www.gnu.org/copyleft/lesser.txt.
     #include "Constraints/OgreBulletDynamics6DofConstraint.h"
     #include "Constraints/OgreBulletDynamicsHingeConstraint.h"
     #include "Constraints/OgreBulletDynamicsPoint2pointConstraint.h"
+	#include "Constraints/OgreBulletDynamicsConeTwistConstraint.h"
 
     #include "Constraints/OgreBulletDynamicsRaycastVehicle.h"
 

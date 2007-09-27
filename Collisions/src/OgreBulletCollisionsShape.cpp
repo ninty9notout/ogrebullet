@@ -85,10 +85,14 @@ namespace OgreBulletCollisions
                     if (hasTransform)
                     {
                         // apply transformation
-                        if (hasVecTransform) 
-                            curVec -= pos;
                         if (hasQuatTransform) 
                             curVec = quat * curVec;
+                        if (hasVecTransform) 
+                            curVec += pos;
+//                        if (hasVecTransform) 
+//                            curVec -= pos;
+//                        if (hasQuatTransform) 
+//                            curVec = quat * curVec;
                     }
 
                     if (sideBeginning)

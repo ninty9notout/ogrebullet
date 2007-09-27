@@ -47,7 +47,7 @@ namespace OgreBulletCollisions
         mShowDebugContactPoints(false),
         mDebugContactPoints(0)
     {
-        mDispatcher = new btCollisionDispatcher();
+        mDispatcher = new btCollisionDispatcher(&mDefaultCollisionConfiguration);
         mBroadphase = new btAxisSweep3(
             OgreBtConverter::to(bounds.getMinimum()), 
             OgreBtConverter::to(bounds.getMaximum()));
@@ -115,6 +115,15 @@ namespace OgreBulletCollisions
         mObjects.push_back (obj);
         mWorld->addCollisionObject(obj->getBulletObject());
     }
+    //------------------------------------------------------------------------- 
+	bool CollisionsWorld::removeObject(Object *obj)
+    {
+       std::deque<Object*>::iterator it = find(mObjects.begin(),mObjects.end(), obj);
+       if (it == mObjects.end())
+          return false;
+       mObjects.erase(it);
+       return true;
+    }
     // -------------------------------------------------------------------------
     bool CollisionsWorld::isObjectregistered(Object *obj) const
     {
@@ -141,7 +150,8 @@ namespace OgreBulletCollisions
         std::deque<Object *>::const_iterator it = mObjects.begin();
         while (it != mObjects.end())
         {
-            if ((*it)->getParentNode() == node)
+            //if ((*it)->getParentNode() == node)
+			if((*it)->getRootNode() == node)
                 return (*it);
             ++it;
         }
@@ -203,8 +213,8 @@ namespace OgreBulletCollisions
     void CollisionsWorld::launchRay(CollisionRayResultCallback &rayresult)
     {
         mWorld->rayTest(
-            OgreBtConverter::to(rayresult.getRay().getOrigin()), 
-            OgreBtConverter::to(rayresult.getRay().getDirection()), 
+            OgreBtConverter::to(rayresult.getRayStartPoint()), 
+            OgreBtConverter::to(rayresult.getRayEndPoint()), 
             *rayresult.getBulletRay ());
     }
 }
