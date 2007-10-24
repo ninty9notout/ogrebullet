@@ -25,7 +25,7 @@ A basic test framework that minimize code in each test scene listener.
 
 #define BASIC_HELP_INFO0 "Use F1, F2, F3, F4"
 #define BASIC_HELP_INFO1 "B,N,G,H to Throw a Cube, Sphere, Cone, Cylinder"
-#define BASIC_HELP_INFO2 "K,L,O,I to Drop  a Cube, Sphere, Cone, Cylinder"
+#define BASIC_HELP_INFO2 "J,K,I,U to Drop  a Cube, Sphere, Cone, Cylinder"
 #define BASIC_HELP_INFO3 ""
 #define BASIC_HELP_INFO4 "left click to drag"
 #define BASIC_HELP_INFO5 "right to camera move"

@@ -26,7 +26,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 #ifndef _OGREBULLETDYNAMICS_SixDofConstraint_H
 #define _OGREBULLETDYNAMICS_SixDofConstraint_H
 
-#include "OgreBulletDynamicsPrerequisites.h"
+#include "OgreBulletDynamicsPreRequisites.h"
 
 #include "OgreBulletDynamicsConstraint.h"
 

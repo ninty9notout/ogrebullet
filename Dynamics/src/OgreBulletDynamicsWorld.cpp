@@ -55,7 +55,7 @@ namespace OgreBulletDynamics
         mWorld = new btDiscreteDynamicsWorld(mDispatcher, mBroadphase, mConstraintsolver);
 
 
-        static_cast <btSimpleDynamicsWorld *> (mWorld)->setGravity(btVector3(gravity.x,gravity.y,gravity.z));
+        static_cast <btDiscreteDynamicsWorld *> (mWorld)->setGravity(btVector3(gravity.x,gravity.y,gravity.z));
 
     }
     // -------------------------------------------------------------------------
@@ -64,19 +64,28 @@ namespace OgreBulletDynamics
         delete mConstraintsolver;
     }
     // -------------------------------------------------------------------------
-    void DynamicsWorld::addRigidBody (RigidBody *rb)
+    void DynamicsWorld::addRigidBody (RigidBody *rb, short collisionGroup, short collisionMask)
     {
         mObjects.push_back (static_cast <Object *> (rb));
-        static_cast <btSimpleDynamicsWorld *> (mWorld)->addRigidBody(rb->getBulletRigidBody());      
+
+		if (collisionGroup == 0 && collisionMask == 0)
+		{
+			// use default collision group/mask values (dynamic/kinematic/static)
+			static_cast <btDiscreteDynamicsWorld *> (mWorld)->addRigidBody(rb->getBulletRigidBody());      
+		}
+		else
+		{
+			static_cast <btDiscreteDynamicsWorld *> (mWorld)->addRigidBody(rb->getBulletRigidBody(), collisionGroup, collisionMask);      
+		}
     }
     // -------------------------------------------------------------------------
-    void DynamicsWorld::stepSimulation(const Ogre::Real elapsedTime)
+    void DynamicsWorld::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps)
     {
         // Reset Debug Lines
         if (mDebugDrawer) 
             mDebugDrawer->clear ();
 
-        static_cast <btSimpleDynamicsWorld *> (mWorld)->stepSimulation(elapsedTime);
+        static_cast <btDiscreteDynamicsWorld *> (mWorld)->stepSimulation(elapsedTime, maxSubSteps);
 
         if (mDebugDrawer) 
         {

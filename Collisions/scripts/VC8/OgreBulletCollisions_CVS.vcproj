@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="OgreBulletCollisions"
 	ProjectGUID="{791F594F-FF44-49D1-A882-FF4DB0DCD92A}"
 	RootNamespace="OgreBulletCollisions"
@@ -284,10 +284,6 @@
 			>
 			<File
 				RelativePath="..\..\include\OgreBulletCollisions.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\OgreBulletCollisionsConvexCast.h"
 				>
 			</File>
 			<File

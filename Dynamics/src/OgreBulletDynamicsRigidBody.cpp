@@ -42,10 +42,12 @@ namespace OgreBulletDynamics
 {
 
     // -------------------------------------------------------------------------
-    RigidBody::RigidBody(const String &name, DynamicsWorld *world)
+    RigidBody::RigidBody(const String &name, DynamicsWorld *world, const short collisionGroup, const short collisionMask)
         :	
         Object(name, world, false)
     {
+		mCollisionGroup = collisionGroup;
+		mCollisionMask = collisionMask;
     }
     // -------------------------------------------------------------------------
     RigidBody::~RigidBody()
@@ -74,15 +76,16 @@ namespace OgreBulletDynamics
         showDebugShape(mWorld->getShowDebugShapes());
 
         btVector3 localInertiaTensor = btVector3(0,0,0);
-        mShape->getBulletShape ()->calculateLocalInertia(bodyMass, localInertiaTensor);
-
+		if (bodyMass > 0.0)
+	        mShape->getBulletShape ()->calculateLocalInertia(bodyMass, localInertiaTensor);
 
         btRigidBody *body = new btRigidBody(bodyMass, mState, mShape->getBulletShape (), localInertiaTensor);
         body->setRestitution(bodyRestitution);
         body->setFriction(bodyFriction);
 
         mObject = body;
-        getDynamicsWorld()->addRigidBody(this);
+
+		getDynamicsWorld()->addRigidBody(this, mCollisionGroup, mCollisionMask);
     }
 
     // -------------------------------------------------------------------------
@@ -93,6 +96,7 @@ namespace OgreBulletDynamics
         const Vector3 &pos, 
         const Quaternion &quat)
     {
+        mState = new ObjectState(this);
 
         mRootNode = node;
 
@@ -114,7 +118,7 @@ namespace OgreBulletDynamics
         body->getWorldTransform().setRotation(btQuaternion(quat.x, quat.y, quat.z, quat.w));
 
         mObject = body;
-        getDynamicsWorld()->addRigidBody(this);
+		getDynamicsWorld()->addRigidBody(this, mCollisionGroup, mCollisionMask);
     }
     // -------------------------------------------------------------------------
     void RigidBody::setStaticShape(OgreBulletCollisions::CollisionShape *shape,
@@ -123,6 +127,7 @@ namespace OgreBulletDynamics
         const Vector3 &pos, 
         const Quaternion &quat)
     {
+        mState = new ObjectState(this);
 
         mShape = shape;
         btRigidBody *body = new btRigidBody(0.0, mState, mShape->getBulletShape ());
@@ -134,7 +139,7 @@ namespace OgreBulletDynamics
         body->getWorldTransform().setRotation(btQuaternion(quat.x, quat.y, quat.z, quat.w));
 
         mObject = body;
-        getDynamicsWorld()->addRigidBody(this);
+		getDynamicsWorld()->addRigidBody(this, mCollisionGroup, mCollisionMask);
     }
     // -------------------------------------------------------------------------
     void RigidBody::setLinearVelocity( const Ogre::Vector3 &vel )

@@ -27,7 +27,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 #ifndef _OGREBULLETDYNAMICS_DynamicWorld_H
 #define _OGREBULLETDYNAMICS_DynamicWorld_H
 
-#include "OgreBulletDynamicsPrerequisites.h"
+#include "OgreBulletDynamicsPreRequisites.h"
 
 #include "OgreBulletCollisionsWorld.h"
 #include "Debug/OgreBulletCollisionsDebugDrawer.h"
@@ -46,9 +46,9 @@ namespace OgreBulletDynamics
 
 	    ~DynamicsWorld();
 
-        void stepSimulation(const Ogre::Real elapsedTime);
+        void stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps = 1);
 
-        void addRigidBody (RigidBody *rb);
+        void addRigidBody (RigidBody *rb, short collisionGroup, short collisionMask);
 
         void setDebugDrawer(OgreBulletCollisions::DebugDrawer *debugdrawer)
         {

@@ -186,8 +186,10 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
 
 
         mChassis->setQueryFlags (GEOMETRY_QUERY_MASK);
+#if (OGRE_VERSION < ((1 << 16) | (5 << 8) | 0)) // only applicable before shoggoth (1.5.0)
         mChassis->setNormaliseNormals(true);
-        mChassis->setCastShadows(true);
+#endif
+		mChassis->setCastShadows(true);
 
 
 
@@ -228,8 +230,10 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
                     "wheel.mesh");
 
                 mWheels[i]->setQueryFlags (GEOMETRY_QUERY_MASK);
+#if (OGRE_VERSION < ((1 << 16) | (5 << 8) | 0)) // only applicable before shoggoth (1.5.0)
                 mWheels[i]->setNormaliseNormals(true);
-                mWheels[i]->setCastShadows(true);
+#endif
+				mWheels[i]->setCastShadows(true);
 
                 mWheelNodes[i] = mSceneMgr->getRootSceneNode ()->createChildSceneNode ();
                 mWheelNodes[i]->attachObject (mWheels[i]);

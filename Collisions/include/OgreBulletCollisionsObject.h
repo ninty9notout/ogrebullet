@@ -27,7 +27,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 #ifndef _OGREBULLETCOLLISIONS_CollisionObject_H
 #define _OGREBULLETCOLLISIONS_CollisionObject_H
 
-#include "OgreBulletCollisionsPrerequisites.h"
+#include "OgreBulletCollisionsPreRequisites.h"
 
 #include "OgreBulletCollisionsWorld.h"
 
@@ -113,7 +113,6 @@ namespace OgreBulletCollisions
 
         CollisionShape*         mShape;
         DebugCollisionShape *   mDebugShape;
-
 
     public:
         static const Ogre::String mMovableType;

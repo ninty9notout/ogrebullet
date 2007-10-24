@@ -58,7 +58,7 @@ http://www.gnu.org/copyleft/lesser.txt.
     #include "Utils/OgreBulletCollisionsMeshToShapeConverter.h"
 
     // Ray
-    #include "OgreBulletCollisionsConvexCast.h"
+    //#include "OgreBulletCollisionsConvexCast.h"
 
     // Core Collisions
     #include "OgreBulletCollisionsObject.h"

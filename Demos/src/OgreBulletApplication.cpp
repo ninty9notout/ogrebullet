@@ -168,7 +168,8 @@ void OgreBulletApplication::createFrameListener(void)
     #if defined OIS_WIN32_PLATFORM
         mWindow->getCustomAttribute("WINDOW", &windowHnd);
     #elif defined OIS_LINUX_PLATFORM
-        mWindow->getCustomAttribute( "GLXWINDOW", &windowHnd );
+        //mWindow->getCustomAttribute( "GLXWINDOW", &windowHnd );
+		mWindow->getCustomAttribute( "WINDOW", &windowHnd );
     #endif    
 
     // Fill parameter list

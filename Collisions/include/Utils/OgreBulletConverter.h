@@ -26,7 +26,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 #ifndef _OGREBULLETCOLLISIONS_OgreBtConverter_H
 #define _OGREBULLETCOLLISIONS_OgreBtConverter_H
 
-#include "OgreBulletCollisionsPrerequisites.h"
+#include "OgreBulletCollisionsPreRequisites.h"
 
 #include "OgreVector3.h"
 #include "OgreQuaternion.h"

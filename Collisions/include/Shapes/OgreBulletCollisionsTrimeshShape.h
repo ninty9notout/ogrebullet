@@ -27,7 +27,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 #ifndef _OGREBULLETCOLLISIONS_TrimeshShape_H
 #define _OGREBULLETCOLLISIONS_TrimeshShape_H
 
-#include "OgreBulletCollisionsPrerequisites.h"
+#include "OgreBulletCollisionsPreRequisites.h"
 
 #include "OgreBulletCollisionsShape.h"
 

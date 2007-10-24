@@ -27,7 +27,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 #ifndef _OGREBULLETDYNAMICS_RigidObject_H
 #define _OGREBULLETDYNAMICS_RigidObject_H
 
-#include "OgreBulletDynamicsPrerequisites.h"
+#include "OgreBulletDynamicsPreRequisites.h"
 
 #include "OgreBulletCollisionsObject.h"
 #include "OgreBulletCollisionsWorld.h"
@@ -44,7 +44,10 @@ namespace OgreBulletDynamics
     class RigidBody : public OgreBulletCollisions::Object
     {
     public:
-	    RigidBody(const Ogre::String &name, DynamicsWorld *world);
+	    RigidBody(const Ogre::String &name, 
+				  DynamicsWorld *world,
+				  const short collisionGroup = 0,
+				  const short collisionMask = 0);
 
 	    virtual ~RigidBody();
 
@@ -96,7 +99,9 @@ namespace OgreBulletDynamics
         Ogre::Vector3       getCenterOfMassPivot (const Ogre::Vector3 &pivotPosition) const;
         
         void setDamping( const Ogre::Real linearDamping, const Ogre::Real angularDamping );
-
+	protected:
+		short mCollisionGroup;
+		short mCollisionMask;
     };
     // -------------------------------------------------------------------------
     // basic rigid body class
@@ -120,7 +125,7 @@ namespace OgreBulletDynamics
         virtual ~WheeledRigidBody(){};
 
     protected:
-        RaycastVehicle *mVehicle;
+		RaycastVehicle *mVehicle;
 
     };
     // -------------------------------------------------------------------------

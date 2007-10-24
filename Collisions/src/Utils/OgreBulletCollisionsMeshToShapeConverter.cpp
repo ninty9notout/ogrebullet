@@ -32,6 +32,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 #include "Shapes/OgreBulletCollisionsCylinderShape.h"
 #include "Shapes/OgreBulletCollisionsSphereShape.h"
 #include "Shapes/OgreBulletCollisionsBoxShape.h"
+#include "Shapes/OgreBulletCollisionsConvexHullShape.h"
 
 using namespace OgreBulletCollisions;
 using namespace Ogre;
@@ -413,7 +414,7 @@ ConvexHullCollisionShape* MeshToShapeConverter::createConvex()
     assert(mVertexCount && (mIndexCount >= 6) && 
         ("Mesh must have some vertices and at least 6 indices (2 triangles)"));
 
-    return 0;//new ConvexHullCollisionShape (_vertices, _vertex_count, 3*sizeof(float));
+    return new ConvexHullCollisionShape(&mVertexBuffer[0].x, mVertexCount, sizeof(Vector3));
 }
 //------------------------------------------------------------------------------------------------
 TriangleMeshCollisionShape* MeshToShapeConverter::createTrimesh()

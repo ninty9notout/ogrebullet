@@ -18,7 +18,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #ifndef _OGREBULLETDYNAMICS_ConeTwistConstraint_H
 #define _OGREBULLETDYNAMICS_ConeTwistConstraint_H
 
-#include "OgreBulletDynamicsPrerequisites.h"
+#include "OgreBulletDynamicsPreRequisites.h"
 
 #include "OgreBulletDynamicsConstraint.h"
 
