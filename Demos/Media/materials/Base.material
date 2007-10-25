@@ -254,3 +254,12 @@ material Bullet/box : Examples/BumpMapping/MultiLightSpecularTemplate
     //set_texture_alias normalMap crate_normalheightmap.png
     //set_texture_alias diffuseMap crate_diffuse.png
 }
+
+material Ac3d/Plane/Mat001_Tex00 : Examples/BumpMapping/MultiLightSpecularTemplate
+{  
+    //set_texture_alias normalMap tiled_floor_normalheightmap.png
+    //set_texture_alias diffuseMap tiled_floor_diffuse.png
+    
+    set_texture_alias diffuseMap MaPZone[Sewer_Plate_04_diffuse].dds
+    set_texture_alias normalMap MaPZone[Sewer_Plate_04_normal].dds
+}

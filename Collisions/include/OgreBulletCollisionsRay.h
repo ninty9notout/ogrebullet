@@ -67,7 +67,7 @@ namespace OgreBulletCollisions
     class CollisionClosestRayResultCallback : public CollisionRayResultCallback
     {
     public:
-		CollisionClosestRayResultCallback(const Ogre::Ray &ray, CollisionsWorld *world, Ogre::Real max_distance = 9999999999);
+		CollisionClosestRayResultCallback(const Ogre::Ray &ray, CollisionsWorld *world, Ogre::Real max_distance=std::numeric_limits<Ogre::Real>::max());
         virtual ~CollisionClosestRayResultCallback(){};
 
         Object *getCollidedObject() const;
