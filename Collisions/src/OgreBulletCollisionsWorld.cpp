@@ -46,7 +46,7 @@ namespace OgreBulletCollisions
         mShowDebugShapes(false),
         mShowDebugContactPoints(false),
         mDebugContactPoints(0)
-    {
+	{
         mDispatcher = new btCollisionDispatcher(&mDefaultCollisionConfiguration);
         mBroadphase = new btAxisSweep3(
             OgreBtConverter::to(bounds.getMinimum()), 
@@ -54,7 +54,10 @@ namespace OgreBulletCollisions
 
         // if not called by a inherited class
         if (init)
-            mWorld = new btCollisionWorld(mDispatcher, mBroadphase);
+		{
+
+            mWorld = new btCollisionWorld(mDispatcher, mBroadphase, &mDefaultCollisionConfiguration);
+		}
     }
     // -------------------------------------------------------------------------
     CollisionsWorld::~CollisionsWorld()

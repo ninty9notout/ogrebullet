@@ -127,10 +127,10 @@ namespace OgreBulletDynamics
         const Vector3 &pos, 
         const Quaternion &quat)
     {
-        mState = new ObjectState(this);
+        //mState = new ObjectState(this);
 
         mShape = shape;
-        btRigidBody *body = new btRigidBody(0.0, mState, mShape->getBulletShape ());
+        btRigidBody *body = new btRigidBody(0.0, 0, mShape->getBulletShape ());
 
         body->setRestitution(bodyRestitution);
         body->setFriction(bodyFriction);

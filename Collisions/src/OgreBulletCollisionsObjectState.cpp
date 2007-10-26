@@ -49,6 +49,7 @@ namespace OgreBulletCollisions
         assert (mObject);
 
         // could use mWorldTrans ?
+		
         worldTrans.setOrigin(OgreBtConverter::to(mObject->getWorldPosition()));
         worldTrans.setRotation(OgreBtConverter::to(mObject->getWorldOrientation()));
     }

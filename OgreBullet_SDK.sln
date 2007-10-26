@@ -9,6 +9,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreBulletCollisions", "Collisions\scripts\VC8\OgreBulletCollisions_SDK.vcproj", "{791F594F-FF44-49D1-A882-FF4DB0DCD92A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dynamics_Demos", "Demos\Dynamics_Demos\scripts\VC8\Ogre_Bullet_Dynamics_Demos_SDK.vcproj", "{96F6C2AA-6145-435B-B6F1-77AB7026BB29}"
+	ProjectSection(ProjectDependencies) = postProject
+		{791F594F-FF44-49D1-A882-FF4DB0DCD92A} = {791F594F-FF44-49D1-A882-FF4DB0DCD92A}
+		{022634CE-F06A-4F71-AA07-3CE7BB1841AE} = {022634CE-F06A-4F71-AA07-3CE7BB1841AE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

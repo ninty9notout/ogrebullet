@@ -52,7 +52,7 @@ namespace OgreBulletDynamics
         mConstraintsolver = new btSequentialImpulseConstraintSolver();
 
         //mWorld = new btSimpleDynamicsWorld();
-        mWorld = new btDiscreteDynamicsWorld(mDispatcher, mBroadphase, mConstraintsolver);
+        mWorld = new btDiscreteDynamicsWorld(mDispatcher, mBroadphase, mConstraintsolver, &mDefaultCollisionConfiguration);
 
 
         static_cast <btDiscreteDynamicsWorld *> (mWorld)->setGravity(btVector3(gravity.x,gravity.y,gravity.z));

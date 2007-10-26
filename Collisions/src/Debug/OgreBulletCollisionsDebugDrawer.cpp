@@ -57,6 +57,10 @@ void DebugDrawer::setDrawAabb(bool enable)
         mDebugMode &= ~btIDebugDraw::DBG_DrawAabb;
 }
 //------------------------------------------------------------------------------------------------
+void	DebugDrawer::draw3dText(const btVector3& location,const char* textString)
+{
+}
+//------------------------------------------------------------------------------------------------
 bool DebugDrawer::doesDrawAabb () const {return (mDebugMode & btIDebugDraw::DBG_DrawAabb) != 0;};
 //------------------------------------------------------------------------------------------------
 bool DebugDrawer::doesDrawWireframe () const {return (mDebugMode & btIDebugDraw::DBG_DrawWireframe) != 0;};
