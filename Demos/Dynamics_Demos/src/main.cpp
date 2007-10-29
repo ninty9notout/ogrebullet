@@ -16,7 +16,7 @@ This source file is not LGPL, it's public source code that you can reuse.
 #include "Primitives_Demo.h"
 #include "Constraints_Demo.h"
 #include "Vehicle_Demo.h"
-#include "Trimesh_Demo.h"
+#include "TriMesh_Demo.h"
 
 // Windows stuff
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32

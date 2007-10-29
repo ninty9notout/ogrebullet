@@ -94,10 +94,9 @@ public:
 
 protected:
 
-    void OgreBulletListener::initWorld (const Ogre::Vector3 &gravityVector = Ogre::Vector3 (0,-9.81,0), 
-                                        const Ogre::AxisAlignedBox &bounds = Ogre::AxisAlignedBox (
-                                                                                        Ogre::Vector3 (-10000, -10000, -10000),
-                                                                                        Ogre::Vector3 (10000,  10000,  10000)));
+    void initWorld (const Ogre::Vector3 &gravityVector = Ogre::Vector3 (0,-9.81,0), 
+                    const Ogre::AxisAlignedBox &bounds = Ogre::AxisAlignedBox (Ogre::Vector3 (-10000, -10000, -10000),
+                                                                               Ogre::Vector3 (10000,  10000,  10000)));
 
     void addGround();
 
@@ -136,8 +135,8 @@ protected:
     
     void getDebugLines();
 
-    OgreBulletDynamics::RigidBody* OgreBulletListener::getBodyUnderCursorUsingBullet(Ogre::Vector3 &intersectionPoint, Ogre::Ray &rayTo);
-    OgreBulletDynamics::RigidBody* OgreBulletListener::getBodyUnderCursorUsingOgre(Ogre::Vector3 &intersectionPoint, Ogre::Ray &rayTo);
+    OgreBulletDynamics::RigidBody* getBodyUnderCursorUsingBullet(Ogre::Vector3 &intersectionPoint, Ogre::Ray &rayTo);
+    OgreBulletDynamics::RigidBody* getBodyUnderCursorUsingOgre(Ogre::Vector3 &intersectionPoint, Ogre::Ray &rayTo);
 
 
 protected:

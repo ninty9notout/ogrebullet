@@ -21,12 +21,11 @@ class Trimesh_Demo : public OgreBulletListener
 {
 public:
 
-    Trimesh_Demo::Trimesh_Demo() : 
-      OgreBulletListener()
+    Trimesh_Demo() : OgreBulletListener()
       {
           mName = "Trimesh Static Scene test";
       };
-    virtual Trimesh_Demo::~Trimesh_Demo(){};
+    virtual ~Trimesh_Demo(){};
 
 
     void init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApplication *application);

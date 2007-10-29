@@ -261,7 +261,7 @@ namespace BetaGUI
             MenuButton* createMenuButton(const Ogre::Vector4 &D, const Ogre::String &M, const Ogre::String &T, Callback C, Window *t);
             BoolButton* createBoolButton(const Ogre::Vector4 &D, const Ogre::String &M, const Ogre::String &T, Callback C, bool *boolValue);
             
-            RealButton *Window::createRealButton(Ogre::Real* value, 
+            RealButton *createRealButton(Ogre::Real* value, 
                 const Ogre::Vector4 &SliderMoves, 
                 const Ogre::String &label,
                 const Ogre::Vector2 &pos);

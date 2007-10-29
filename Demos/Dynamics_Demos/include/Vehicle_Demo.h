@@ -21,12 +21,11 @@ class Vehicles_Demo : public OgreBulletListener
 {
 public:
 
-    Vehicles_Demo::Vehicles_Demo() : 
-      OgreBulletListener()
+Vehicles_Demo() : OgreBulletListener()
       {
         mName = "Vehicle Test Scene";
       };
-    virtual Vehicles_Demo::~Vehicles_Demo(){};
+    virtual ~Vehicles_Demo(){};
 
 
     void init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApplication *application);
@@ -37,7 +36,7 @@ public:
     bool frameStarted(Ogre::Real elapsedTime);
 
 private:
-    OgreBulletDynamics::WheeledRigidBody               *mCarChassis;
+    OgreBulletDynamics::WheeledRigidBody        *mCarChassis;
     OgreBulletDynamics::VehicleTuning	        *mTuning;
     OgreBulletDynamics::VehicleRayCaster	    *mVehicleRayCaster;
     OgreBulletDynamics::RaycastVehicle	        *mVehicle;

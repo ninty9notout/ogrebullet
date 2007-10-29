@@ -53,7 +53,7 @@ A basic test framework that minimize code in each test scene listener.
 
 #else
 
-    #include "OIS/ois.h"
+    #include "OIS/OIS.h"
     namespace OIS
     {
         class Keyboard;

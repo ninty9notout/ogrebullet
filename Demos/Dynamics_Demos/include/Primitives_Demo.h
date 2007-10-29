@@ -21,12 +21,11 @@ class Primitives_Demo : public OgreBulletListener
 {
 public:
 
-    Primitives_Demo::Primitives_Demo() : 
-      OgreBulletListener()
+    Primitives_Demo() : OgreBulletListener()
       {
           mName = "Primitives Test Scene";
       };
-    virtual Primitives_Demo::~Primitives_Demo(){};
+    virtual ~Primitives_Demo(){};
 
 
     void init (Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApplication *application);

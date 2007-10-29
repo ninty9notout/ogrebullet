@@ -21,12 +21,11 @@ class Constraints_Demo : public OgreBulletListener
 {
 public:
 
-    Constraints_Demo::Constraints_Demo() : 
-      OgreBulletListener()
+    Constraints_Demo() : OgreBulletListener()
       {
           mName = "Constraints Demo";
       };
-    virtual Constraints_Demo::~Constraints_Demo(){};
+    virtual ~Constraints_Demo(){};
 
     void init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApplication *application);
 

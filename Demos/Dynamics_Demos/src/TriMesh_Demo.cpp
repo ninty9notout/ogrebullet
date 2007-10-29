@@ -10,7 +10,7 @@ Copyright (c) 2007 tuan.kuranes@gmail.com
 
 This source file is not LGPL, it's public source code that you can reuse.
 -----------------------------------------------------------------------------*/
-#include "Trimesh_Demo.h"
+#include "TriMesh_Demo.h"
 
 #include "OgreBulletDynamicsWorld.h"
 #include "OgreBulletDynamicsRigidBody.h"
@@ -108,3 +108,4 @@ void Trimesh_Demo::keyPressed(BULLET_KEY_CODE key)
 
     return OgreBulletListener::keyPressed (key);
 }
+
