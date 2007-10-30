@@ -11,7 +11,7 @@ material 23 - Default
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture GLASS.png
+				texture glass.png
 				tex_address_mode wrap
 				filtering trilinear
 			}
@@ -31,7 +31,7 @@ material 19 - Default
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture CB_SKIN.png
+				texture CB_Skin.png
 				tex_address_mode wrap
 				filtering trilinear
 			}
@@ -51,7 +51,7 @@ material 21 - Default
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture PULLEY.png
+				texture Pulley.png
 				tex_address_mode wrap
 				filtering trilinear
 			}
@@ -71,7 +71,7 @@ material 14 - Default
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture BUGSPIN.png
+				texture BugSPIN.png
 				tex_address_mode wrap
 				filtering trilinear
 			}
@@ -91,7 +91,7 @@ material 22 - Default
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture BUG_ENG.png
+				texture Bug_Eng.png
 				tex_address_mode wrap
 				filtering trilinear
 			}

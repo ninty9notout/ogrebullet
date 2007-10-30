@@ -28,7 +28,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 
 #include "Utils/OgreBulletCollisionsMeshToShapeConverter.h"
 
-#include "Shapes/OgreBulletCollisionsTriMeshShape.h"
+#include "Shapes/OgreBulletCollisionsTrimeshShape.h"
 #include "Shapes/OgreBulletCollisionsCylinderShape.h"
 #include "Shapes/OgreBulletCollisionsSphereShape.h"
 #include "Shapes/OgreBulletCollisionsBoxShape.h"
