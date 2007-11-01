@@ -157,6 +157,11 @@ namespace OgreBulletDynamics
         getBulletRigidBody()->applyImpulse (OgreBtConverter::to(impulse), OgreBtConverter::to(position));
     }
     // -------------------------------------------------------------------------
+    void RigidBody::applyForce( const Ogre::Vector3 &impulse, const Ogre::Vector3 &position )
+    {
+        getBulletRigidBody()->applyForce(OgreBtConverter::to(impulse), OgreBtConverter::to(position));
+    }
+    // -------------------------------------------------------------------------
     Ogre::Vector3 RigidBody::getCenterOfMassPivot( const Ogre::Vector3 &pivotPosition ) const
     {
         const btVector3 centerOfMassPivot(getCenterOfMassTransform().inverse()* OgreBtConverter::to(pivotPosition));

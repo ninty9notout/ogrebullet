@@ -76,6 +76,7 @@ namespace OgreBulletDynamics
         void setLinearVelocity(const Ogre::Vector3 &vel);
         void setLinearVelocity(const Ogre::Real x, const Ogre::Real y, const Ogre::Real z);
         void applyImpulse(const Ogre::Vector3 &impulse, const Ogre::Vector3 &position);
+        void applyForce(const Ogre::Vector3 &impulse, const Ogre::Vector3 &position);
 
 
         inline btRigidBody*         getBulletRigidBody() const;
