@@ -3,6 +3,7 @@ Readme for OgreBullet
 
 Chaster's Changelog: (latest changes at top)
 ============================================
+11/1/2007 - Fix ray in demos and added CollisionClosestRayResultCallback::getCollisionNormal()
 11/1/2007 - added "applyForce()" function to OgreBullet RigidBody class.  Similar to applyImpulse().
 10/29/2007 - added fixes from Dermont for Linux Compiling.
 10/25/2007 - small syntax fix for CollisionClosestRayResultCallback().  Thanks andy
