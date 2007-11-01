@@ -110,8 +110,8 @@ mDebugRayLine(0),
 mRayQuery(0),
 mInputListener(0),
 mGuiListener(0),
-
-mPickConstraint(0)
+mPickConstraint(0),
+mCollisionClosestRayResultCallback(0)
 {
 
 
@@ -407,8 +407,8 @@ void OgreBulletListener::button0Pressed()
     Ogre::Vector3 pickPos;
     Ogre::Ray rayTo;
     OgreBulletDynamics::RigidBody * body = 
-        //getBodyUnderCursorUsingBullet(pickPos, rayTo);
-        getBodyUnderCursorUsingOgre(pickPos, rayTo);
+        getBodyUnderCursorUsingBullet(pickPos, rayTo);
+        //getBodyUnderCursorUsingOgre(pickPos, rayTo);
     if (body)
     {  
         //other exclusions?
@@ -417,7 +417,7 @@ void OgreBulletListener::button0Pressed()
             ))
         {
             mPickedBody = body;
-            mPickedBody->disableDeactivation();						
+            mPickedBody->disableDeactivation();		
             const Vector3 localPivot (body->getCenterOfMassPivot(pickPos));
             OgreBulletDynamics::PointToPointConstraint *p2p  = 
                 new OgreBulletDynamics::PointToPointConstraint(body, localPivot);
@@ -458,8 +458,8 @@ void OgreBulletListener::button1Pressed()
     Ogre::Vector3 pickPos;
     Ogre::Ray rayTo;
     OgreBulletDynamics::RigidBody * body = 
-        //getBodyUnderCursorUsingBullet(pickPos, rayTo);
-        getBodyUnderCursorUsingOgre(pickPos, rayTo);
+        getBodyUnderCursorUsingBullet(pickPos, rayTo);
+        //getBodyUnderCursorUsingOgre(pickPos, rayTo);
     if (body)
     {  
         if (!(body->isStaticObject() 
@@ -535,6 +535,7 @@ void OgreBulletListener::mouseMoved()
         //dir.normalise();
         //dir *= mOldPickingDist;
         Ogre::Vector3 dir = rayTo.getDirection () * mOldPickingDist;
+        dir.normalise();
 
         const Ogre::Vector3 newPos (eyePos + dir);
         p2p->setPivotB (newPos);    
@@ -688,12 +689,16 @@ OgreBulletDynamics::RigidBody* OgreBulletListener::getBodyUnderCursorUsingBullet
 {
     rayTo = mCamera->getCameraToViewportRay (mInputListener->getAbsMouseX(), mInputListener->getAbsMouseY());
 
-    OgreBulletCollisions::CollisionClosestRayResultCallback  myCollisionClosestRayResultCallback(rayTo, mWorld);
-    mWorld->launchRay (myCollisionClosestRayResultCallback);
-    if (myCollisionClosestRayResultCallback.doesCollide ())
+	delete mCollisionClosestRayResultCallback;
+	mCollisionClosestRayResultCallback = new CollisionClosestRayResultCallback(rayTo, mWorld, mCamera->getFarClipDistance());
+
+    mWorld->launchRay (*mCollisionClosestRayResultCallback);
+    if (mCollisionClosestRayResultCallback->doesCollide ())
     {
         OgreBulletDynamics::RigidBody * body = static_cast <OgreBulletDynamics::RigidBody *> 
-            (myCollisionClosestRayResultCallback.getCollidedObject());
+            (mCollisionClosestRayResultCallback->getCollidedObject());
+		
+		intersectionPoint = mCollisionClosestRayResultCallback->getCollisionPoint ();
         setDebugText("Hit :" + body->getName());
         return body;
     }
@@ -841,8 +846,8 @@ bool OgreBulletListener::checkIfEnoughPlaceToAddObject(float maxDist)
     Ogre::Vector3 pickPos;
     Ogre::Ray rayTo;
     OgreBulletDynamics::RigidBody * body = 
-        //getBodyUnderCursorUsingBullet(pickPos, rayTo);
-        getBodyUnderCursorUsingOgre(pickPos, rayTo);
+        getBodyUnderCursorUsingBullet(pickPos, rayTo);
+        //getBodyUnderCursorUsingOgre(pickPos, rayTo);
     if (body)
     {          
         if ((pickPos - mCamera->getDerivedPosition ()).length () < maxDist)

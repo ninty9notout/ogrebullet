@@ -153,8 +153,8 @@ protected:
 
 
     Ogre::Camera            *mCamera;
-    Ogre::Radian                    mCameraRotX;
-    Ogre::Radian                    mCameraRotY;
+    Ogre::Radian             mCameraRotX;
+    Ogre::Radian             mCameraRotY;
     float                    mCameraMove;
     Ogre::Vector3            mCameraTrans;
 
@@ -188,7 +188,6 @@ protected:
     bool                    mEnableCCD;
 
 
-
    BetaGUI::StaticText*  mFpsStaticText;
 
 
@@ -197,6 +196,7 @@ protected:
    OgreBulletDynamics::TypedConstraint  *mPickConstraint;
    Ogre::Vector3                        mOldPickingPos;
    Ogre::Vector3                        mOldPickingDist;
+   OgreBulletCollisions::CollisionClosestRayResultCallback  *mCollisionClosestRayResultCallback;
 
    OgreBulletCollisions::DebugLines    *mDebugRayLine;
    Ogre::RaySceneQuery                 *mRayQuery;
