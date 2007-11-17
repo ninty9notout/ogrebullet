@@ -64,7 +64,7 @@ namespace OgreBulletCollisions
         Ogre::SceneManager *getSceneManager() const {return mScnMgr;}
         btCollisionWorld *getBulletCollisionWorld() const {return mWorld;}
 
-        void launchRay (CollisionRayResultCallback &ray);
+        void launchRay (CollisionRayResultCallback &ray, short int collisionFilterMask = -1);
 
     protected:
         btCollisionWorld*          mWorld;
