@@ -32,7 +32,6 @@ http://www.gnu.org/copyleft/lesser.txt.
 #include "OgreBulletCollisionsWorld.h"
 #include "Debug/OgreBulletCollisionsDebugDrawer.h"
 
-
 namespace OgreBulletDynamics
 {
     // -------------------------------------------------------------------------
@@ -42,11 +41,19 @@ namespace OgreBulletDynamics
     public:
         DynamicsWorld(Ogre::SceneManager *mgr, 
             const Ogre::AxisAlignedBox &bounds,  
-            const Ogre::Vector3 &gravity);
+            const Ogre::Vector3 &gravity,
+            bool init = true);
 
 	    ~DynamicsWorld();
 
-        void stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps = 1);
+        template <class BTDNYWORLDCLASS>
+            void createBtDynamicsWorld(BTDNYWORLDCLASS *&createdWorld)
+            {
+                createdWorld = new BTDNYWORLDCLASS(mDispatcher, mBroadphase, mConstraintsolver, &mDefaultCollisionConfiguration);
+                mWorld = createdWorld;
+            }
+
+        void stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps = 1, const Ogre::Real fixedTimestep = 1./60.);
 
         void addRigidBody (RigidBody *rb, short collisionGroup, short collisionMask);
 

@@ -43,7 +43,8 @@ namespace OgreBulletDynamics
 
     DynamicsWorld::DynamicsWorld(Ogre::SceneManager *mgr, 
                 const Ogre::AxisAlignedBox &bounds,  
-                const Ogre::Vector3 &gravity) :
+                const Ogre::Vector3 &gravity,
+                bool init) :
         CollisionsWorld(mgr, bounds, false),
             mDebugDrawer(0)
     {
@@ -51,11 +52,11 @@ namespace OgreBulletDynamics
         //btSequentialImpulseConstraintSolver3
         mConstraintsolver = new btSequentialImpulseConstraintSolver();
 
-        //mWorld = new btSimpleDynamicsWorld();
-        mWorld = new btDiscreteDynamicsWorld(mDispatcher, mBroadphase, mConstraintsolver, &mDefaultCollisionConfiguration);
-
-
-        static_cast <btDiscreteDynamicsWorld *> (mWorld)->setGravity(btVector3(gravity.x,gravity.y,gravity.z));
+        //only if init is true, otherwise you have to create mWorld manually later on
+        if (init) {
+            mWorld = new btDiscreteDynamicsWorld(mDispatcher, mBroadphase, mConstraintsolver, &mDefaultCollisionConfiguration);
+            static_cast <btDiscreteDynamicsWorld *> (mWorld)->setGravity(btVector3(gravity.x,gravity.y,gravity.z));
+        }
 
     }
     // -------------------------------------------------------------------------
@@ -63,6 +64,7 @@ namespace OgreBulletDynamics
     {
         delete mConstraintsolver;
     }
+
     // -------------------------------------------------------------------------
     void DynamicsWorld::addRigidBody (RigidBody *rb, short collisionGroup, short collisionMask)
     {
@@ -79,13 +81,13 @@ namespace OgreBulletDynamics
 		}
     }
     // -------------------------------------------------------------------------
-    void DynamicsWorld::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps)
+    void DynamicsWorld::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps, const Ogre::Real fixedTimestep)
     {
         // Reset Debug Lines
         if (mDebugDrawer) 
             mDebugDrawer->clear ();
 
-        static_cast <btDiscreteDynamicsWorld *> (mWorld)->stepSimulation(elapsedTime, maxSubSteps);
+        static_cast <btDiscreteDynamicsWorld *> (mWorld)->stepSimulation(elapsedTime, maxSubSteps, fixedTimestep);
 
         if (mDebugDrawer) 
         {
