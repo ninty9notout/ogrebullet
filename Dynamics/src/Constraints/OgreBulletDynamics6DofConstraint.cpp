@@ -57,5 +57,35 @@ namespace OgreBulletDynamics
     // -------------------------------------------------------------------------
     SixDofConstraint::~SixDofConstraint()
     {
-    }
+	}
+	// -------------------------------------------------------------------------
+	void	 SixDofConstraint::setLinearLowerLimit(const Ogre::Vector3& linearLower)
+	{
+		static_cast<btGeneric6DofConstraint* > (mConstraint)->setLinearLowerLimit(OgreBulletCollisions::OgreBtConverter::to (linearLower));
+	}
+	// -------------------------------------------------------------------------
+	void	 SixDofConstraint::setLinearUpperLimit(const Ogre::Vector3& linearUpper)
+	{
+		static_cast<btGeneric6DofConstraint* > (mConstraint)->setLinearLowerLimit(OgreBulletCollisions::OgreBtConverter::to (linearUpper));
+	}
+	// -------------------------------------------------------------------------
+	void	 SixDofConstraint::setAngularLowerLimit(const Ogre::Vector3& angularLower)
+	{
+		static_cast<btGeneric6DofConstraint* > (mConstraint)->setLinearLowerLimit(OgreBulletCollisions::OgreBtConverter::to (angularLower));
+	}
+	// -------------------------------------------------------------------------
+	void	 SixDofConstraint::setAngularUpperLimit(const Ogre::Vector3& angularUpper)
+	{
+		static_cast<btGeneric6DofConstraint* > (mConstraint)->setLinearLowerLimit(OgreBulletCollisions::OgreBtConverter::to (angularUpper));
+	}
+	// -------------------------------------------------------------------------
+	void	 SixDofConstraint::setLimit(const int axis, const Ogre::Real lo, const Ogre::Real hi)
+	{
+		static_cast<btGeneric6DofConstraint* > (mConstraint)->setLimit(axis, lo, hi);
+	}
+	// -------------------------------------------------------------------------
+	bool	 SixDofConstraint::isLimited(int limitIndex)
+	{
+		return static_cast<btGeneric6DofConstraint* > (mConstraint)->isLimited(limitIndex);
+	}
 }
