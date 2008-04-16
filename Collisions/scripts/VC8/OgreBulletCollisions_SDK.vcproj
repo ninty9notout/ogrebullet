@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm114"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include;&quot;$(BULLET_HOME)\src&quot;;&quot;$(OGRE_HOME)\include&quot;;&quot;$(OGRE_HOME)\Samples\include&quot;"
+				AdditionalIncludeDirectories="..\..\include;&quot;$(BULLET_HOME)\src&quot;;&quot;$(BULLET_HOME)\Extras\GIMPACT\include&quot;;&quot;$(OGRE_HOME)\include&quot;;&quot;$(OGRE_HOME)\Samples\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
@@ -114,7 +114,7 @@
 				AdditionalOptions="-Zm110"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\include;&quot;$(BULLET_HOME)\src&quot;;$(OGRE_HOME)\include;$(OGRE_HOME)\Samples\include"
+				AdditionalIncludeDirectories="..\..\include;&quot;$(BULLET_HOME)\src&quot;;&quot;$(BULLET_HOME)\Extras\GIMPACT\include&quot;;&quot;$(OGRE_HOME)\include&quot;;&quot;$(OGRE_HOME)\Samples\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_PRECOMP"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -213,6 +213,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\Shapes\OgreBulletCollisionsCapsuleShape.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\Shapes\OgreBulletCollisionsCompoundShape.cpp"
 					>
 				</File>
@@ -226,6 +230,10 @@
 				</File>
 				<File
 					RelativePath="..\..\src\Shapes\OgreBulletCollisionsCylinderShape.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Shapes\OgreBulletCollisionsGImpactShape.cpp"
 					>
 				</File>
 				<File
@@ -327,6 +335,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Shapes\OgreBulletCollisionsCapsuleShape.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Shapes\OgreBulletCollisionsCompoundShape.h"
 					>
 				</File>
@@ -343,6 +355,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Shapes\OgreBulletCollisionsGImpactShape.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Shapes\OgreBulletCollisionsMinkowskiSumShape.h"
 					>
 				</File>
@@ -356,6 +372,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Shapes\OgreBulletCollisionsStaticPlaneShape.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Shapes\OgreBulletCollisionsTerrainShape.h"
 					>
 				</File>
 				<File

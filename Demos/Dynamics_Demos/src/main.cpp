@@ -4,7 +4,7 @@ This source file is part of OGREBULLET
 (Object-oriented Graphics Rendering Engine Bullet Wrapper)
 For the latest info, see http://www.ogre3d.org/phpBB2addons/viewforum.php?f=10
 
-Copyright (c) 2007 tuan.kuranes@gmail.com
+Copyright (c) 2007 tuan.kuranes@gmail.com (Use it Freely, even Statically, but have to contribute any changes)
 
 
 
@@ -17,6 +17,9 @@ This source file is not LGPL, it's public source code that you can reuse.
 #include "Constraints_Demo.h"
 #include "Vehicle_Demo.h"
 #include "TriMesh_Demo.h"
+#include "Constraints_Demo.h"
+#include "Terrain_Demo.h"
+#include "Ragdoll_Demo.h"
 
 // Windows stuff
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
@@ -37,13 +40,19 @@ int main(int argc,char* argv[])
 
     ogrebulletscenes.push_back(new Primitives_Demo());
     ogrebulletscenes.push_back(new Trimesh_Demo());
-    ogrebulletscenes.push_back(new Vehicles_Demo());
+	ogrebulletscenes.push_back(new Vehicles_Demo());
+	ogrebulletscenes.push_back(new Constraints_Demo());
+	ogrebulletscenes.push_back(new Terrain_Demo());
+	ogrebulletscenes.push_back(new Ragdoll_Demo());
 
     //ogrebulletscenes.push_back(new Constraints_Demo());
 
     ogrebulletscenes[0]->setNextKey(KC_F1);
     ogrebulletscenes[1]->setNextKey(KC_F2);
-    ogrebulletscenes[2]->setNextKey(KC_F3);
+	ogrebulletscenes[2]->setNextKey(KC_F3);
+	ogrebulletscenes[3]->setNextKey(KC_F4);
+	ogrebulletscenes[4]->setNextKey(KC_F5);
+	ogrebulletscenes[5]->setNextKey(KC_F6);
 
     //ogrebulletscenes[3]->setNextKey(KC_F4);
     //ogrebulletscenes[4]->setNextKey(KC_F5);

@@ -4,7 +4,7 @@ This source file is part of OGREBULLET
 (Object-oriented Graphics Rendering Engine Bullet Wrapper)
 For the latest info, see http://www.ogre3d.org/phpBB2addons/viewforum.php?f=10
 
-Copyright (c) 2007 tuan.kuranes@gmail.com
+Copyright (c) 2007 tuan.kuranes@gmail.com (Use it Freely, even Statically, but have to contribute any changes)
 
 
 
@@ -129,10 +129,10 @@ void OgreBulletListener::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBul
     mInputListener = new OgreBulletInputListener(this, win);
 
     /******************* CREATESHADOWS ***************************/
+#ifndef _DEBUG
     mCurrentShadowTechnique = 9;//SHADOWTYPE_TEXTURE_ADDITIVE
 
 	mSceneMgr->setShadowColour(ColourValue(0.5, 0.5, 0.5));
-	mSceneMgr->setShadowFarDistance(500);
 
 	Ogre::PixelFormat pxlFmt = Ogre::PF_L8;
 	if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(RSC_TEXTURE_FLOAT))
@@ -171,11 +171,12 @@ void OgreBulletListener::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBul
 	//mLiSPSMSetup->setUseSimpleOptimalAdjust(true);
 	mLiSPSMSetup->setOptimalAdjustFactor(1.1f);
 	mSceneMgr->setShadowCameraSetup(Ogre::ShadowCameraSetupPtr(mLiSPSMSetup));
-	
+
 
 
 
     mSceneMgr->setShadowTechnique(convertToShadowTechnique(mCurrentShadowTechnique));
+#endif // _DEBUG
 
     /******************* CREATE Queries ***************************/
     mRayQuery = mSceneMgr->createRayQuery(Ray());
@@ -463,7 +464,7 @@ void OgreBulletListener::button1Pressed()
     if (body)
     {  
         if (!(body->isStaticObject() 
-            //|| body->isKinematicObject()
+            || body->isKinematicObject()
             ))
         {
 
@@ -1156,7 +1157,7 @@ RigidBody *OgreBulletListener::addStaticTrimesh(const Ogre::String &instanceName
     Entity *sceneEntity = mSceneMgr->createEntity(instanceName + StringConverter::toString(mNumEntitiesInstanced), meshName);
     sceneEntity->setCastShadows (castShadow);
 
-    MeshToShapeConverter *trimeshConverter = new MeshToShapeConverter(sceneEntity);
+    StaticMeshToShapeConverter *trimeshConverter = new StaticMeshToShapeConverter(sceneEntity);
     TriangleMeshCollisionShape *sceneTriMeshShape = trimeshConverter->createTrimesh();
     delete trimeshConverter;
     RigidBody *sceneRigid = new RigidBody(

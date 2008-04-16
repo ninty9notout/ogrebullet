@@ -4,7 +4,7 @@ This source file is part of OGREBULLET
 (Object-oriented Graphics Rendering Engine Bullet Wrapper)
 For the latest info, see http://www.ogre3d.org/phpBB2addons/viewforum.php?f=10
 
-Copyright (c) 2007 tuan.kuranes@gmail.com
+Copyright (c) 2007 tuan.kuranes@gmail.com (Use it Freely, even Statically, but have to contribute any changes)
 
 
 
@@ -35,29 +35,30 @@ using namespace OgreBulletDynamics;
 ///notice that for higher-quality slow-moving vehicles, another approach might be better
 ///implementing explicit hinged-wheel constraints with cylinder collision, rather then raycasts
 
-float	gMaxEngineForce = 3000.f;
 
-float	gSteeringIncrement = 0.04f;
-float	gSteeringClamp = 0.8f;
+static float	gMaxEngineForce = 3000.f;
 
-float	gWheelRadius = 0.5f;
-float	gWheelWidth = 0.4f;
+static float	gSteeringIncrement = 0.04f;
+static float	gSteeringClamp = 0.8f;
 
-float	gWheelFriction = 1e30f;//1000;//1e30f;
-float	gSuspensionStiffness = 20.f;
-float	gSuspensionDamping = 2.3f;
-float	gSuspensionCompression = 4.4f;
+static float	gWheelRadius = 0.5f;
+static float	gWheelWidth = 0.4f;
 
-float	gRollInfluence = 0.1f;//1.0f;
-float   gSuspensionRestLength = 0.6;
-float   gMaxSuspensionTravelCm = 500.0;
-float   gFrictionSlip = 10.5;
+static float	gWheelFriction = 1e30f;//1000;//1e30f;
+static float	gSuspensionStiffness = 20.f;
+static float	gSuspensionDamping = 2.3f;
+static float	gSuspensionCompression = 4.4f;
+
+static float	gRollInfluence = 0.1f;//1.0f;
+static float   gSuspensionRestLength = 0.6;
+static float   gMaxSuspensionTravelCm = 500.0;
+static float   gFrictionSlip = 10.5;
+
+static const Vector3    CameraStart            = Vector3(0, 25, 0);
+// -------------------------------------------------------------------------
+static const Vector3   CarPosition             = Vector3(15, 3,-15);
 
 #define CUBE_HALF_EXTENTS 1
-
-const Vector3    CameraStart            = Vector3(0, 25, 0);
-// -------------------------------------------------------------------------
-const Vector3   CarPosition             = Vector3(15, 3,-15);
 
 // -------------------------------------------------------------------------
 void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApplication *application)
@@ -171,8 +172,9 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
 
 
     /// create vehicle
-    {
-        const Vector3 chassisShift(0, 0.5, 0);
+	{
+		const Vector3 chassisShift(0, 1.0, 0);
+		float connectionHeight = 0.7f;
 
         mChassis = mSceneMgr->createEntity(
                 "chassis" + StringConverter::toString(mNumEntitiesInstanced++),
@@ -241,7 +243,6 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
             }
 
             {
-                float connectionHeight = 0.2f;
                 bool isFrontWheel = true;
 
                 Vector3 connectionPointCS0 (

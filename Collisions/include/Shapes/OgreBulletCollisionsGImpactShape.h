@@ -23,32 +23,30 @@ Place - Suite 330, Boston, MA 02111-1307, USA, or go to
 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 -----------------------------------------------------------------------------
 */
+#ifndef   _OGREBULLETCOLLISIONS_GImpact_Shapes_H
+#define   _OGREBULLETCOLLISIONS_GImpact_Shapes_H
 
-#include "OgreBulletCollisions.h"
+#include "OgreBulletCollisionsPreRequisites.h"
 
-#include "Shapes/OgreBulletCollisionsConeShape.h"
-#include "Debug/OgreBulletCollisionsDebugLines.h"
+#include "GIMPACT/Bullet/btGImpactShape.h"
+#include "GIMPACT/Bullet/btGImpactCollisionAlgorithm.h"
 
-using namespace Ogre;
-using namespace OgreBulletCollisions;
+#include "OgreBulletCollisionsShape.h"
 
 namespace OgreBulletCollisions
 {
-    // -------------------------------------------------------------------------
-    ConeCollisionShape::ConeCollisionShape(Real radius, Real height, const Vector3 &axe):	
-        CollisionShape()
-    {
-        if (axe == Vector3::UNIT_Y)
-            mShape = new btConeShape (btScalar (radius), btScalar (height));
-        else if (axe == Vector3::UNIT_X)
-            mShape = new btConeShapeX (btScalar (radius), btScalar (height));
-        else
-             mShape = new btConeShapeZ (btScalar (radius), btScalar (height));
+	class __declspec( dllexport ) GImpactConcaveShape : public CollisionShape
+	{
+	public:
+		GImpactConcaveShape(Ogre::Vector3 *_vertices, unsigned int _vertex_count, unsigned int *_indices, unsigned int_index_count);
+		virtual ~GImpactConcaveShape();
 
-    }
-    // -------------------------------------------------------------------------
-    ConeCollisionShape::~ConeCollisionShape ()
-    {
-    }
+		bool drawWireFrame(DebugLines *wire, 
+			const Ogre::Vector3 &pos = Ogre::Vector3::ZERO, 
+			const Ogre::Quaternion &quat= Ogre::Quaternion::IDENTITY) const;
+
+	private:
+		btTriangleMesh*         mTriMesh;
+	};
 }
-
+#endif

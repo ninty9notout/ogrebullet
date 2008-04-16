@@ -4,23 +4,23 @@ This source file is part of OGREBULLET
 (Object-oriented Graphics Rendering Engine Bullet Wrapper)
 For the latest info, see http://www.ogre3d.org/phpBB2addons/viewforum.php?f=10
 
-Copyright (c) 2007 tuan.kuranes@gmail.com
+Copyright (c) 2007 tuan.kuranes@gmail.com (Use it Freely, even Statically, but have to contribute any changes)
 
 
 
 This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free Software
+the terms of the GPL General Public License with runtime exception as published by the Free Software
 Foundation; either version 2 of the License, or (at your option) any later
 version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT
 ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+FOR A PARTICULAR PURPOSE. See the GPL General Public License with runtime exception for more details.
 
-You should have received a copy of the GNU Lesser General Public License along with
+You should have received a copy of the GPL General Public License with runtime exception along with
 this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 Place - Suite 330, Boston, MA 02111-1307, USA, or go to
-http://www.gnu.org/copyleft/lesser.txt.
+http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 -----------------------------------------------------------------------------
 */
 
@@ -40,7 +40,7 @@ using namespace OgreBulletCollisions;
 namespace OgreBulletCollisions
 {
     // -------------------------------------------------------------------------
-    CollisionsWorld::CollisionsWorld(SceneManager *scn, const AxisAlignedBox &bounds, bool init):
+    CollisionsWorld::CollisionsWorld(SceneManager *scn, const AxisAlignedBox &bounds, bool init, bool set32bitsAxisSweep):
         mScnMgr(scn),
         mBounds(bounds),
         mShowDebugShapes(false),
@@ -48,22 +48,34 @@ namespace OgreBulletCollisions
         mDebugContactPoints(0)
 	{
         mDispatcher = new btCollisionDispatcher(&mDefaultCollisionConfiguration);
-        mBroadphase = new btAxisSweep3(
-            OgreBtConverter::to(bounds.getMinimum()), 
-            OgreBtConverter::to(bounds.getMaximum()));
+
+		if (set32bitsAxisSweep)
+		{
+			mBroadphase = new bt32BitAxisSweep3(
+				OgreBtConverter::to(bounds.getMinimum()), 
+				OgreBtConverter::to(bounds.getMaximum()));
+		}
+		else
+		{
+			mBroadphase = new btAxisSweep3(
+				OgreBtConverter::to(bounds.getMinimum()), 
+				OgreBtConverter::to(bounds.getMaximum()));
+		}
 
         // if not called by a inherited class
         if (init)
 		{
+			mWorld = new btCollisionWorld(mDispatcher, mBroadphase, &mDefaultCollisionConfiguration);
 
-            mWorld = new btCollisionWorld(mDispatcher, mBroadphase, &mDefaultCollisionConfiguration);
+			btCollisionDispatcher * dispatcher = static_cast<btCollisionDispatcher *>(mWorld->getDispatcher());
+			btGImpactCollisionAlgorithm::registerAlgorithm(dispatcher);
 		}
     }
     // -------------------------------------------------------------------------
     CollisionsWorld::~CollisionsWorld()
     {
         delete mWorld;
-        delete mBroadphase;
+		delete mBroadphase;
         delete mDispatcher;
     }
     // -------------------------------------------------------------------------

@@ -4,8 +4,8 @@ This source file is part of OGREBULLET
 (Object-oriented Graphics Rendering Engine Bullet Wrapper)
 For the latest info, see http://www.ogre3d.org/phpBB2addons/viewforum.php?f=10
 
-Copyright (c) 2007 tuan.kuranes@gmail.com
-
+Copyright (c) 2007 tuan.kuranes@gmail.com (Use it Freely, even Statically, but have to contribute any changes)
+ 
 
 
 This source file is not LGPL, it's public source code that you can reuse.
@@ -203,39 +203,38 @@ void OgreBulletApplication::createFrameListener(void)
 // -------------------------------------------------------------------------
 void OgreBulletApplication::setupResources(void)
 {
-    ExampleApplication::setupResources(); 
-    ResourceGroupManager *rsm = ResourceGroupManager::getSingletonPtr();
-    StringVector groups = rsm->getResourceGroups();        
-    if (std::find(groups.begin(), groups.end(), String("OgreBullet")) == groups.end())
-    {
-        FileInfoListPtr finfo =  ResourceGroupManager::getSingleton().findResourceFileInfo (
-            "Bootstrap", "axes.mesh");
-        const bool isSDK =  (!finfo->empty()) && 
-            StringUtil::startsWith (finfo->begin()->archive->getName(), "../../media/packs/ogrecore.zip", true);
-       
-        rsm->createResourceGroup("OgreBullet");
+	ExampleApplication::setupResources(); 
+	ResourceGroupManager *rsm = ResourceGroupManager::getSingletonPtr();
+	StringVector groups = rsm->getResourceGroups();        
+	FileInfoListPtr finfo =  ResourceGroupManager::getSingleton().findResourceFileInfo (
+		"Bootstrap", "axes.mesh");
+	const bool isSDK =  (!finfo->empty()) && 
+		StringUtil::startsWith (finfo->begin()->archive->getName(), "../../media/packs/ogrecore.zip", true);
 
-        if (isSDK)
-        {
-            rsm->addResourceLocation ("../../../ogrebullet/demos/Media","FileSystem", "OgreBullet");
-            rsm->addResourceLocation ("../../../ogrebullet/demos/Media/textures", "FileSystem", "OgreBullet");
-            rsm->addResourceLocation ("../../../ogrebullet/demos/Media/overlays", "FileSystem", "OgreBullet");
-            rsm->addResourceLocation ("../../../ogrebullet/demos/Media/materials", "FileSystem", "OgreBullet");
-            rsm->addResourceLocation ("../../../ogrebullet/demos/Media/models", "FileSystem", "OgreBullet");
+	const String resName ("OgreBullet");
+	{
+		if (std::find(groups.begin(), groups.end(), resName) == groups.end())
+		{
+			rsm->createResourceGroup(resName);
+			String baseName;
+			if (isSDK)
+			{
+				baseName = "../../../ogrebullet/";
+			}
+			else
+			{
+				baseName = "../../../../../ogreaddons/ogrebullet/";
+			}
 
-			rsm->addResourceLocation ("../../../ogrebullet/demos/Media/gui", "FileSystem", "BetaGui");
-        }
-        else
-        {
-            rsm->addResourceLocation ("../../../../../ogreaddons/ogrebullet/demos/Media", "FileSystem", "OgreBullet");
-            rsm->addResourceLocation ("../../../../../ogreaddons/ogrebullet/demos/Media/textures", "FileSystem", "OgreBullet");
-            rsm->addResourceLocation ("../../../../../ogreaddons/ogrebullet/demos/Media/overlays", "FileSystem", "OgreBullet");
-            rsm->addResourceLocation ("../../../../../ogreaddons/ogrebullet/demos/Media/materials", "FileSystem", "OgreBullet");
-            rsm->addResourceLocation ("../../../../../ogreaddons/ogrebullet/demos/Media/models", "FileSystem", "OgreBullet");
+			rsm->addResourceLocation (baseName + "demos/Media","FileSystem", resName);
+			rsm->addResourceLocation (baseName + "demos/Media/textures", "FileSystem", resName);
+			rsm->addResourceLocation (baseName + "demos/Media/overlays", "FileSystem", resName);
+			rsm->addResourceLocation (baseName + "demos/Media/materials", "FileSystem", resName);
+			rsm->addResourceLocation (baseName + "demos/Media/models", "FileSystem", resName);
 
-            rsm->addResourceLocation ("../../../../../ogreaddons/ogrebullet/demos/Media/gui", "FileSystem", "BetaGui");
-        }
-    }
+			rsm->addResourceLocation (baseName + "demos/Media/gui", "FileSystem", resName);
+		}
+	}
 }
 // -------------------------------------------------------------------------
 void OgreBulletApplication::loadResources(void)

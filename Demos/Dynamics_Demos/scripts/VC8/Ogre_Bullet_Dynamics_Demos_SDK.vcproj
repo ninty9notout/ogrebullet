@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(BULLET_HOME)\src&quot;;..\include;..\..\include;..\..\..\include;..\..\..\..\include;..\..\..\..\Collisions\include;..\..\..\..\Dynamics\include;&quot;$(OGRE_HOME)\include&quot;;&quot;$(OGRE_HOME)\Samples\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(BULLET_HOME)\src&quot;;&quot;$(BULLET_HOME)\Extras\GIMPACT\include&quot;;..\include;..\..\include;..\..\..\include;..\..\..\..\include;..\..\..\..\Collisions\include;..\..\..\..\Dynamics\include;&quot;$(OGRE_HOME)\include&quot;;&quot;$(OGRE_HOME)\Samples\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
@@ -65,7 +65,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib OIS_d.lib OgreBulletCollisions_d.lib OgreBulletDynamics_d.lib libbulletcollision_d.lib libbulletdynamics_d.lib libbulletmath_d.lib"
+				AdditionalDependencies="OgreMain_d.lib OIS_d.lib OgreBulletCollisions_d.lib OgreBulletDynamics_d.lib libbulletcollision_d.lib libbulletdynamics_d.lib libbulletmath_d.lib libGIMPACT_d.lib"
 				OutputFile="$(OutDir)/OgreBulletDemos.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;..\..\..\..\lib\$(ConfigurationName)&quot;;&quot;$(OGRE_HOME)\lib\&quot;;&quot;$(BULLET_HOME)\out\$(ConfigurationName)8\libs&quot;"
@@ -132,7 +132,7 @@
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="&quot;$(BULLET_HOME)\src&quot;;..\include;..\..\include;..\..\..\include;..\..\..\..\include;..\..\..\..\Collisions\include;..\..\..\..\Dynamics\include;&quot;$(OGRE_HOME)\include&quot;;&quot;$(OGRE_HOME)\Samples\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(BULLET_HOME)\src&quot;;&quot;$(BULLET_HOME)\Extras\GIMPACT\include&quot;;..\include;..\..\include;..\..\..\include;..\..\..\..\include;..\..\..\..\Collisions\include;..\..\..\..\Dynamics\include;&quot;$(OGRE_HOME)\include&quot;;&quot;$(OGRE_HOME)\Samples\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_PRECOMP"
 				StringPooling="true"
 				MinimalRebuild="true"
@@ -158,7 +158,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib OIS.lib OgreBulletCollisions.lib OgreBulletDynamics.lib libbulletcollision.lib libbulletdynamics.lib libbulletmath.lib"
+				AdditionalDependencies="OgreMain.lib OIS.lib OgreBulletCollisions.lib OgreBulletDynamics.lib libbulletcollision.lib libbulletdynamics.lib libbulletmath.lib libGIMPACT.lib"
 				OutputFile="$(OutDir)/OgreBulletDemos.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;..\..\..\..\lib\$(ConfigurationName)&quot;;&quot;$(OGRE_HOME)\lib\&quot;;&quot;$(BULLET_HOME)\out\$(ConfigurationName)8\libs&quot;"
@@ -218,6 +218,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\Ragdoll_Demo.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\Terrain_Demo.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\TriMesh_Demo.cpp"
 				>
 			</File>
@@ -261,6 +269,14 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Primitives_Demo.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\Ragdoll_Demo.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\Terrain_Demo.h"
 				>
 			</File>
 			<File

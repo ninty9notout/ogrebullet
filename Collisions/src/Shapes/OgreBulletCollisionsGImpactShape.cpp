@@ -26,6 +26,34 @@ http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 #include "OgreBulletCollisions.h"
 
+#include "Shapes/OgreBulletCollisionsGImpactShape.h"
+
+/***************************************************************************
+
+This source file is part of OGREBULLET
+(Object-oriented Graphics Rendering Engine Bullet Wrapper)
+For the latest info, see http://www.ogre3d.org/phpBB2addons/viewforum.php?f=10
+
+Copyright (c) 2007 tuan.kuranes@gmail.com (Use it Freely, even Statically, but have to contribute any changes)
+
+
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GPL General Public License with runtime exception as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GPL General Public License with runtime exception for more details.
+
+You should have received a copy of the GPL General Public License with runtime exception along with
+this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+Place - Suite 330, Boston, MA 02111-1307, USA, or go to
+http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+-----------------------------------------------------------------------------
+*/
+
 #include "Shapes/OgreBulletCollisionsTrimeshShape.h"
 #include "Debug/OgreBulletCollisionsDebugLines.h"
 #include "Utils/OgreBulletConverter.h"
@@ -35,63 +63,48 @@ using namespace OgreBulletCollisions;
 
 namespace OgreBulletCollisions
 {
-    // -------------------------------------------------------------------------
-    TriangleMeshCollisionShape::TriangleMeshCollisionShape(
-        Vector3        *vertices, 
-        unsigned int vertexCount, 
-        unsigned int *indices, 
-        unsigned int indexCount,
-		bool use32bitsIndices) :	
-        CollisionShape(),
-        mTriMesh(0)
-    {
-		unsigned int numFaces = indexCount / 3;
+	GImpactConcaveShape::GImpactConcaveShape(
+		Ogre::Vector3 *_vertices,
+		unsigned int _vertex_count,
+		unsigned int *_indices,
+		unsigned int int_index_count) : CollisionShape(), mTriMesh(0)
+	{
+		mTriMesh = new btTriangleMesh();
 
-		mTriMesh = new btTriangleMesh(use32bitsIndices);
+		unsigned int numFaces = int_index_count / 3;
 
-        btVector3    vertexPos[3];
-        for (unsigned int n = 0; n < numFaces; ++n)
-        {
+		btVector3    vertexPos[3];
+		for (size_t n = 0; n < numFaces; ++n)
+		{
+			for (unsigned int i = 0; i < 3; ++i)
 			{
-				const Vector3 &vec = vertices[*indices];
-				vertexPos[0][0] = vec.x;
-				vertexPos[0][1] = vec.y;
-				vertexPos[0][2] = vec.z;
-			}
-			{
-				const Vector3 &vec = vertices[*(indices + 1)];
-				vertexPos[1][0] = vec.x;
-				vertexPos[1][1] = vec.y;
-				vertexPos[1][2] = vec.z;
-			}
-			{
-				const Vector3 &vec = vertices[*(indices + 2)];
-				vertexPos[2][0] = vec.x;
-				vertexPos[2][1] = vec.y;
-				vertexPos[2][2] = vec.z;
+				const Vector3 &vec = _vertices[*_indices];
+				vertexPos[i][0] = vec.x;
+				vertexPos[i][1] = vec.y;
+				vertexPos[i][2] = vec.z;
+				*_indices++;
 			}
 
-			indices += 3;
+			mTriMesh->addTriangle(vertexPos[0], vertexPos[1], vertexPos[2]);
+		}
 
-            mTriMesh->addTriangle(vertexPos[0], vertexPos[1], vertexPos[2]);
-        }
+		btGImpactMeshShape * trimesh = new btGImpactMeshShape(mTriMesh);
+		trimesh->setLocalScaling(btVector3(1, 1, 1));
+		trimesh->updateBound();
+		mShape = trimesh;
+	}
 
-		const bool useQuantizedAABB = true;
-        mShape = new btBvhTriangleMeshShape(mTriMesh, useQuantizedAABB);
-
-    }
-    // -------------------------------------------------------------------------
-    TriangleMeshCollisionShape::~TriangleMeshCollisionShape()
-    {
-    }
-    // -------------------------------------------------------------------------
-	bool TriangleMeshCollisionShape::drawWireFrame(DebugLines *wire, 
+	GImpactConcaveShape::~GImpactConcaveShape()
+	{
+	}
+	// -------------------------------------------------------------------------
+	bool GImpactConcaveShape::drawWireFrame(DebugLines *wire, 
 		const Ogre::Vector3 &pos, 
 		const Ogre::Quaternion &quat) const
-    {
-        const int numTris = mTriMesh->getNumTriangles ();
-        if (numTris > 0)
-        {
+	{
+		const int numTris = mTriMesh->getNumTriangles ();
+		if (numTris > 0)
+		{
 
 			const int numSubParts = mTriMesh->getNumSubParts ();
 			for (int currSubPart = 0; currSubPart < numSubParts; currSubPart++)
@@ -146,9 +159,8 @@ namespace OgreBulletCollisions
 					wire->addLine (BtOgreConverter::to(vert2), BtOgreConverter::to(vert0));
 				}
 			}
-            return true;
-        }
-        return false;
-    }
+			return true;
+		}
+		return false;
+	}
 }
-

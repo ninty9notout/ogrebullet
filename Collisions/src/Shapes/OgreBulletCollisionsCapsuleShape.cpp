@@ -25,8 +25,9 @@ http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 */
 
 #include "OgreBulletCollisions.h"
+#include "Utils/OgreBulletConverter.h"
 
-#include "Shapes/OgreBulletCollisionsConeShape.h"
+#include "Shapes/OgreBulletCollisionsCapsuleShape.h"
 #include "Debug/OgreBulletCollisionsDebugLines.h"
 
 using namespace Ogre;
@@ -35,19 +36,18 @@ using namespace OgreBulletCollisions;
 namespace OgreBulletCollisions
 {
     // -------------------------------------------------------------------------
-    ConeCollisionShape::ConeCollisionShape(Real radius, Real height, const Vector3 &axe):	
+    CapsuleCollisionShape::CapsuleCollisionShape(const Real  radius, const Real height, const Vector3 &axe):	
         CollisionShape()
     {
-        if (axe == Vector3::UNIT_Y)
-            mShape = new btConeShape (btScalar (radius), btScalar (height));
-        else if (axe == Vector3::UNIT_X)
-            mShape = new btConeShapeX (btScalar (radius), btScalar (height));
-        else
-             mShape = new btConeShapeZ (btScalar (radius), btScalar (height));
-
+        if (axe == Vector3::UNIT_X)
+            mShape = new btCapsuleShapeX(radius, height);
+        else if (axe == Vector3::UNIT_Y)
+            mShape = new btCapsuleShape (radius, height);
+        else if (axe == Vector3::UNIT_Z)
+            mShape = new btCapsuleShapeZ(radius, height);
     }
     // -------------------------------------------------------------------------
-    ConeCollisionShape::~ConeCollisionShape ()
+    CapsuleCollisionShape::~CapsuleCollisionShape()
     {
     }
 }
