@@ -279,8 +279,8 @@ void OgreBulletListener::setPhysicGUI()
     // appears and slide in
     const Vector2 screenRightTop (mWindow->getWidth () - aWindow->getSize ().x, 0);
     const Vector2 screenRightOffTop (mWindow->getWidth () - aWindow->getSize ().x, - aWindow->getSize ().y);
-    gui->addEffect(new BetaGUI::MoveEffect(aWindow, 2, screenRightOffTop, screenRightTop, 3));
-    gui->addEffect(new BetaGUI::AlphaEffect(aWindow, 2, 0, 1, 3));
+    gui->addEffect(new BetaGUI::MoveEffect(aWindow, 2, screenRightOffTop, screenRightTop, 0));
+    gui->addEffect(new BetaGUI::AlphaEffect(aWindow, 2, 0, 1, 0));
 
     aWindow = menuWindow->addMenuWindowTab("Interaction");
     aWindow->addRealButton(&mShootSpeed,
@@ -311,8 +311,8 @@ void OgreBulletListener::setPhysicGUI()
     // appears and slide in
     const Vector2 screenRightBottom (mWindow->getWidth () - 360, mWindow->getHeight () - 24);
     const Vector2 screenRightOffBottom (mWindow->getWidth () - 360, mWindow->getHeight ());
-    gui->addEffect(new BetaGUI::MoveEffect(aWindow, 2, screenRightOffBottom, screenRightBottom, 3));
-    gui->addEffect(new BetaGUI::AlphaEffect(aWindow, 2, 0, 1, 3));
+    gui->addEffect(new BetaGUI::MoveEffect(aWindow, 2, screenRightOffBottom, screenRightBottom, 0));
+    gui->addEffect(new BetaGUI::AlphaEffect(aWindow, 2, 0, 1, 0));
 
 
     aWindow = menuWindow->addMenuWindowTab("Help");
@@ -331,15 +331,15 @@ void OgreBulletListener::setPhysicGUI()
     gui->addEffect(new BetaGUI::MoveEffect(aWindow, 2, -halfWindowSize, screenCentered, 0));
     gui->addEffect(new BetaGUI::AlphaEffect(aWindow, 2, 0, 1, 0));
     // disappears
-    gui->addEffect(new BetaGUI::AlphaEffect(aWindow, 2, 1, 0, 5));
+    gui->addEffect(new BetaGUI::AlphaEffect(aWindow, 2, 1, 0, 3));
 
     menuWindow->addBoolButton(&mQuit, "Quit", BetaGUI::WPT_HORIZONTAL);
 
     // appears and slide in
     const Vector2 screenLeftTop (- menuWindow->getSize ().x, 0);
     const Vector2 screenLeftOffTop (0, 0);
-    gui->addEffect(new BetaGUI::MoveEffect(menuWindow, 2, screenLeftTop, screenLeftOffTop, 3));
-    gui->addEffect(new BetaGUI::AlphaEffect(menuWindow, 2, 0, 1, 3));
+    gui->addEffect(new BetaGUI::MoveEffect(menuWindow, 2, screenLeftTop, screenLeftOffTop, 0));
+    gui->addEffect(new BetaGUI::AlphaEffect(menuWindow, 2, 0, 1, 0));
 }
 // -------------------------------------------------------------------------
 void OgreBulletListener::getDebugLines()
@@ -871,8 +871,8 @@ void OgreBulletListener::throwDynamicObject(BULLET_KEY_CODE key)
 
             body->setLinearVelocity(
                 mCamera->getDerivedDirection().normalisedCopy() * mShootSpeed
-                );
-        }
+				);
+		}
         break;
     case KC_N: 
         if ( checkIfEnoughPlaceToAddObject(trowDist))

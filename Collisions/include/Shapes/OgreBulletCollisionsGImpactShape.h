@@ -35,7 +35,11 @@ http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 namespace OgreBulletCollisions
 {
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 	class __declspec( dllexport ) GImpactConcaveShape : public CollisionShape
+#else
+	class GImpactConcaveShape : public CollisionShape
+#endif
 	{
 	public:
 		GImpactConcaveShape(Ogre::Vector3 *_vertices, unsigned int _vertex_count, unsigned int *_indices, unsigned int_index_count);

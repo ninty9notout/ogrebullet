@@ -111,15 +111,15 @@ namespace OgreBulletCollisions
 		void addEntity(Ogre::Entity *entity,const Ogre::Matrix4 &transform = Ogre::Matrix4::IDENTITY);
 		void addMesh(const Ogre::MeshPtr &mesh, const Ogre::Matrix4 &transform);
 
-		BoxCollisionShape* AnimatedMeshToShapeConverter::createAlignedBox(unsigned char bone, 
+		BoxCollisionShape* createAlignedBox(unsigned char bone, 
 			const Ogre::Vector3 &bonePosition,
 			const Ogre::Quaternion &boneOrientation);
 
-		BoxCollisionShape* AnimatedMeshToShapeConverter::createOrientedBox(unsigned char bone, 
+		BoxCollisionShape* createOrientedBox(unsigned char bone, 
 			const Ogre::Vector3 &bonePosition,
 			const Ogre::Quaternion &boneOrientation);
 
-		CapsuleCollisionShape* AnimatedMeshToShapeConverter::createOrientedCapsuleCollisionShape(unsigned char bone, 
+		CapsuleCollisionShape* createOrientedCapsuleCollisionShape(unsigned char bone, 
 			const Ogre::Vector3 &bonePosition,
 			const Ogre::Quaternion &boneOrientation);
 

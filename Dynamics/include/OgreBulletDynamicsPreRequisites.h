@@ -51,6 +51,8 @@ namespace OgreBulletDynamics
     class VehicleTuning;
     class RaycastVehicle;
     class WheelInfo;
+
+	class RagDoll;
 }
 
 #endif //_OGREBULLETDYNAMICS_PREREQUISITES_H

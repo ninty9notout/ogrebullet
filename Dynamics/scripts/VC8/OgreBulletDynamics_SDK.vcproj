@@ -227,6 +227,10 @@
 			<Filter
 				Name="Prefab"
 				>
+				<File
+					RelativePath="..\..\src\Prefab\OgreBulletDynamicsRagDoll.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -289,6 +293,10 @@
 			<Filter
 				Name="Prefab"
 				>
+				<File
+					RelativePath="..\..\include\Prefab\OgreBulletDynamicsRagDoll.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
