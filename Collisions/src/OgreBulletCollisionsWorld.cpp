@@ -230,8 +230,9 @@ namespace OgreBulletCollisions
         mWorld->rayTest(
             OgreBtConverter::to(rayresult.getRayStartPoint()), 
             OgreBtConverter::to(rayresult.getRayEndPoint()), 
-            *rayresult.getBulletRay (),
-			collisionFilterMask);
+            *rayresult.getBulletRay ()
+			//, collisionFilterMask
+			);
     }
 }
 

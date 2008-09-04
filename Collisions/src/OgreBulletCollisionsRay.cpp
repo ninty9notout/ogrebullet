@@ -75,7 +75,7 @@ namespace OgreBulletCollisions
     // -------------------------------------------------------------------------
     bool  CollisionRayResultCallback::doesCollide() const
     {
-        return mRayResultCallback->HasHit();
+        return mRayResultCallback->hasHit();
     }
     // -------------------------------------------------------------------------
     Object  *CollisionClosestRayResultCallback::getCollidedObject () const
