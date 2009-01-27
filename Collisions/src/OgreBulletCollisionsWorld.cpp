@@ -26,6 +26,8 @@ http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 #include "OgreBulletCollisions.h"
 
+#include "Debug/OgreBulletCollisionsDebugDrawer.h"
+
 #include "OgreBulletCollisionsWorld.h"
 #include "Utils/OgreBulletConverter.h"
 
@@ -34,205 +36,259 @@ http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 #include "OgreBulletCollisionsRay.h"
 
 
+
 using namespace Ogre;
 using namespace OgreBulletCollisions;
 
 namespace OgreBulletCollisions
 {
-    // -------------------------------------------------------------------------
-    CollisionsWorld::CollisionsWorld(SceneManager *scn, const AxisAlignedBox &bounds, bool init, bool set32bitsAxisSweep):
-        mScnMgr(scn),
-        mBounds(bounds),
-        mShowDebugShapes(false),
-        mShowDebugContactPoints(false),
-        mDebugContactPoints(0)
+	// -------------------------------------------------------------------------
+	CollisionsWorld::CollisionsWorld(SceneManager *scn, const AxisAlignedBox &bounds, bool init, bool set32bitsAxisSweep):
+mScnMgr(scn),
+mBounds(bounds),
+mShowDebugShapes(false),
+mShowDebugContactPoints(false),
+mDebugContactPoints(0),
+mDebugDrawer(0)
+{
+	mDispatcher = new btCollisionDispatcher(&mDefaultCollisionConfiguration);
+
+	if (set32bitsAxisSweep)
 	{
-        mDispatcher = new btCollisionDispatcher(&mDefaultCollisionConfiguration);
+		mBroadphase = new bt32BitAxisSweep3(
+			OgreBtConverter::to(bounds.getMinimum()), 
+			OgreBtConverter::to(bounds.getMaximum()));
+	}
+	else
+	{
+		mBroadphase = new btAxisSweep3(
+			OgreBtConverter::to(bounds.getMinimum()), 
+			OgreBtConverter::to(bounds.getMaximum()));
+	}
 
-		if (set32bitsAxisSweep)
+	// if not called by a inherited class
+	if (init)
+	{
+		mWorld = new btCollisionWorld(mDispatcher, mBroadphase, &mDefaultCollisionConfiguration);
+
+		btCollisionDispatcher * dispatcher = static_cast<btCollisionDispatcher *>(mWorld->getDispatcher());
+		btGImpactCollisionAlgorithm::registerAlgorithm(dispatcher);
+	}
+}
+// -------------------------------------------------------------------------
+void  CollisionsWorld::setDebugDrawer(DebugDrawer *debugdrawer)
+{
+	mDebugDrawer = debugdrawer;
+	(static_cast <btCollisionWorld *> (mWorld))->setDebugDrawer(mDebugDrawer);
+};
+// -------------------------------------------------------------------------
+void  CollisionsWorld::setDebugContactPoints(DebugLines *debugcontact)
+{
+	mDebugContactPoints = debugcontact;
+};
+
+// -------------------------------------------------------------------------
+CollisionsWorld::~CollisionsWorld()
+{
+	delete mWorld;
+	delete mBroadphase;
+	delete mDispatcher;
+}
+// -------------------------------------------------------------------------
+void CollisionsWorld::setShowDebugContactPoints(bool show)
+{
+	if (show && !mShowDebugContactPoints)
+	{
+		assert (mDebugContactPoints == 0);
+		mDebugContactPoints = new DebugLines();
+		getSceneManager()->getRootSceneNode ()->createChildSceneNode ("DebugContactPoints")->attachObject (mDebugContactPoints);
+		mShowDebugContactPoints = true;
+		return;
+	}
+	if (!show && mShowDebugContactPoints)
+	{
+		assert (mDebugContactPoints != 0);
+		Ogre::SceneNode * n = (Ogre::SceneNode *)getSceneManager()->getRootSceneNode ()->getChild ("DebugContactPoints");
+		n->detachObject (mDebugContactPoints);
+		n->getParentSceneNode()->removeAndDestroyChild("DebugContactPoints");
+		delete mDebugContactPoints;
+		mShowDebugContactPoints = false;
+		return;
+	}
+}
+// -------------------------------------------------------------------------
+void CollisionsWorld::setShowDebugShapes(bool show)
+{
+	if (show && !mShowDebugShapes)
+	{
+		//assert (mDebugShapes == 0);
+		std::deque<Object*>::iterator it = mObjects.begin();
+		while (it != mObjects.end())
 		{
-			mBroadphase = new bt32BitAxisSweep3(
-				OgreBtConverter::to(bounds.getMinimum()), 
-				OgreBtConverter::to(bounds.getMaximum()));
+			(*it)->showDebugShape(show);
+			++it;
 		}
-		else
+		mShowDebugShapes = true;
+		return;
+	}
+	if (!show && mShowDebugShapes)
+	{
+		//assert (mDebugShapes != 0);
+		std::deque<Object*>::iterator it = mObjects.begin();
+		while (it != mObjects.end())
 		{
-			mBroadphase = new btAxisSweep3(
-				OgreBtConverter::to(bounds.getMinimum()), 
-				OgreBtConverter::to(bounds.getMaximum()));
+			(*it)->showDebugShape(show);
+			++it;
 		}
+		mShowDebugShapes = false;
+		return;
+	}
+}
+// -------------------------------------------------------------------------
+void CollisionsWorld::addObject(Object *obj, int filterGrp, short int collisionFilter)
+{
+	mObjects.push_back (obj);
+	mWorld->addCollisionObject(obj->getBulletObject(), filterGrp, collisionFilter);
+}
+//------------------------------------------------------------------------- 
+bool CollisionsWorld::removeObject(Object *obj)
+{
+	std::deque<Object*>::iterator it = find(mObjects.begin(),mObjects.end(), obj);
+	if (it == mObjects.end())
+		return false;
+	mObjects.erase(it);
+	return true;
+}
+// -------------------------------------------------------------------------
+bool CollisionsWorld::isObjectregistered(Object *obj) const
+{
+	std::deque<Object *>::const_iterator itRes = std::find(mObjects.begin(), mObjects.end(), obj);
+	if (itRes != mObjects.end())
+		return true;
+	return false;
+}
+// -------------------------------------------------------------------------
+Object *CollisionsWorld::findObject(btCollisionObject *object) const
+{
+	std::deque<Object *>::const_iterator it = mObjects.begin();
+	while (it != mObjects.end())
+	{
+		if ((*it)->getBulletObject() == object)
+			return (*it);
+		++it;
+	}
+	return 0;
+}
+// -------------------------------------------------------------------------
+Object *CollisionsWorld::findObject(SceneNode *node) const
+{
+	std::deque<Object *>::const_iterator it = mObjects.begin();
+	while (it != mObjects.end())
+	{
+		//if ((*it)->getParentNode() == node)
+		if((*it)->getRootNode() == node)
+			return (*it);
+		++it;
+	}
+	return 0;
+}
+// -------------------------------------------------------------------------
+void CollisionsWorld::discreteCollide()
+{
+	if (mDebugDrawer) 
+		mDebugDrawer->clear ();
+	if (mDebugContactPoints) 
+		mDebugContactPoints->clear ();
 
-        // if not called by a inherited class
-        if (init)
+
+	mWorld->performDiscreteCollisionDetection();
+
+	///one way to draw all the contact points is iterating over contact manifolds / points:
+	const unsigned int  numManifolds = mWorld->getDispatcher()->getNumManifolds();
+	for (unsigned int i=0;i < numManifolds; i++)
+	{
+		btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
+
+		btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
+		btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
+
+		contactManifold->refreshContactPoints(obA->getWorldTransform(),obB->getWorldTransform());
+
+		const unsigned int numContacts = contactManifold->getNumContacts();
+		for (unsigned int j = 0;j < numContacts; j++)
 		{
-			mWorld = new btCollisionWorld(mDispatcher, mBroadphase, &mDefaultCollisionConfiguration);
+			btManifoldPoint& pt = contactManifold->getContactPoint(j);
 
-			btCollisionDispatcher * dispatcher = static_cast<btCollisionDispatcher *>(mWorld->getDispatcher());
-			btGImpactCollisionAlgorithm::registerAlgorithm(dispatcher);
+			if (mShowDebugContactPoints)
+			{
+				btVector3 ptA = pt.getPositionWorldOnA();
+				btVector3 ptB = pt.getPositionWorldOnB();
+				btVector3 ptDistB = ptB  + pt.m_normalWorldOnB *100;
+
+				mDebugContactPoints->addLine(ptA.x(),ptA.y(),ptA.z(),
+					ptB.x(),ptB.y(),ptB.z());
+				mDebugContactPoints->addLine(ptB.x(),ptB.y(),ptB.z(),
+					ptDistB.x(),ptDistB.y(),ptDistB.z());
+			}
 		}
-    }
-    // -------------------------------------------------------------------------
-    CollisionsWorld::~CollisionsWorld()
-    {
-        delete mWorld;
-		delete mBroadphase;
-        delete mDispatcher;
-    }
-    // -------------------------------------------------------------------------
-    void CollisionsWorld::setShowDebugContactPoints(bool show)
-    {
-        if (show && !mShowDebugContactPoints)
-        {
-            assert (mDebugContactPoints == 0);
-
-            mShowDebugContactPoints = true;
-            return;
-        }
-        if (!show && mShowDebugContactPoints)
-        {
-            assert (mDebugContactPoints != 0);
-
-            mShowDebugContactPoints = false;
-            return;
-        }
-    }
-    // -------------------------------------------------------------------------
-    void CollisionsWorld::setShowDebugShapes(bool show)
-    {
-        if (show && !mShowDebugShapes)
-        {
-            //assert (mDebugShapes == 0);
-            std::deque<Object*>::iterator it = mObjects.begin();
-            while (it != mObjects.end())
-            {
-                (*it)->showDebugShape(show);
-                ++it;
-            }
-            mShowDebugShapes = true;
-            return;
-        }
-        if (!show && mShowDebugShapes)
-        {
-            //assert (mDebugShapes != 0);
-            std::deque<Object*>::iterator it = mObjects.begin();
-            while (it != mObjects.end())
-            {
-                (*it)->showDebugShape(show);
-                ++it;
-            }
-            mShowDebugShapes = false;
-            return;
-        }
-    }
-    // -------------------------------------------------------------------------
-    void CollisionsWorld::addObject(Object *obj)
-    {
-        mObjects.push_back (obj);
-        mWorld->addCollisionObject(obj->getBulletObject());
-    }
-    //------------------------------------------------------------------------- 
-	bool CollisionsWorld::removeObject(Object *obj)
-    {
-       std::deque<Object*>::iterator it = find(mObjects.begin(),mObjects.end(), obj);
-       if (it == mObjects.end())
-          return false;
-       mObjects.erase(it);
-       return true;
-    }
-    // -------------------------------------------------------------------------
-    bool CollisionsWorld::isObjectregistered(Object *obj) const
-    {
-        std::deque<Object *>::const_iterator itRes = std::find(mObjects.begin(), mObjects.end(), obj);
-        if (itRes != mObjects.end())
-            return true;
-        return false;
-    }
-    // -------------------------------------------------------------------------
-    Object *CollisionsWorld::findObject(btCollisionObject *object) const
-    {
-        std::deque<Object *>::const_iterator it = mObjects.begin();
-        while (it != mObjects.end())
-        {
-            if ((*it)->getBulletObject() == object)
-                return (*it);
-            ++it;
-        }
-        return 0;
-    }
-    // -------------------------------------------------------------------------
-    Object *CollisionsWorld::findObject(SceneNode *node) const
-    {
-        std::deque<Object *>::const_iterator it = mObjects.begin();
-        while (it != mObjects.end())
-        {
-            //if ((*it)->getParentNode() == node)
-			if((*it)->getRootNode() == node)
-                return (*it);
-            ++it;
-        }
-        return 0;
-    }
-    // -------------------------------------------------------------------------
-    void CollisionsWorld::discreteCollide()
-    {
-        mWorld->performDiscreteCollisionDetection();
+		//you can un-comment out this line, and then all points are removed
+		//contactManifold->clearManifold();	
+	}
+	if (mDebugContactPoints) 
+		mDebugContactPoints->draw();
 
 
-        ///one way to draw all the contact points is iterating over contact manifolds / points:
-        const unsigned int  numManifolds = mWorld->getDispatcher()->getNumManifolds();
-        for (unsigned int i=0;i < numManifolds; i++)
-        {
-            btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
+	/*
+	if (mShowDebugShapes)
+	{
+	std::deque<Object*>::iterator it = mObjects.begin();
+	while (it != mObjects.end())
+	{
 
-            btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
-            btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
+	//(*it)->getBulletObject()->getWorldTransform().getOpenGLMatrix( m );
+	mShowDebugDrawShapes->
+	//GL_ShapeDrawer::drawOpenGL(m,objects[i].getCollisionShape(),btVector3(1,1,1),getDebugMode());
 
-            contactManifold->refreshContactPoints(obA->getWorldTransform(),obB->getWorldTransform());
+	++it;
+	}
+	}
+	*/
 
-            const unsigned int numContacts = contactManifold->getNumContacts();
-            for (unsigned int j = 0;j < numContacts; j++)
-            {
-                btManifoldPoint& pt = contactManifold->getContactPoint(j);
+	if (mDebugDrawer) 
+	{
+		// draw lines that step Simulation sent.
+		//mDebugDrawer->draw();
 
-                if (mShowDebugContactPoints)
-                {
-                    btVector3 ptA = pt.getPositionWorldOnA();
-                    btVector3 ptB = pt.getPositionWorldOnB();
+		const bool drawFeaturesText = (mDebugDrawer->getDebugMode () & btIDebugDraw::DBG_DrawFeaturesText) != 0;
+		if (drawFeaturesText)
+		{
+			// on all bodies we have
+			// we get all shapes and draw more information
+			//depending on mDebugDrawer mode.
+			std::deque<Object*>::iterator it = mObjects.begin();
+			while (it != mObjects.end())
+			{
+				//(*it)->drawFeaturesText();
+				++it;
+			}
+		}
+	}
+	if (mDebugContactPoints) 
+	{
+		// draw lines that step Simulation sent.
+		mDebugContactPoints->draw();
+	}
+}
 
-                    mDebugContactPoints->addLine(ptA.x(),ptA.y(),ptA.z(),
-                                                     ptB.x(),ptB.y(),ptB.z());
-                }
-            }
-            //you can un-comment out this line, and then all points are removed
-            //contactManifold->clearManifold();	
-        }
-
-        /*
-        if (mShowDebugShapes)
-        {
-            std::deque<Object*>::iterator it = mObjects.begin();
-            while (it != mObjects.end())
-            {
-
-                //(*it)->getBulletObject()->getWorldTransform().getOpenGLMatrix( m );
-                mShowDebugDrawShapes->
-                //GL_ShapeDrawer::drawOpenGL(m,objects[i].getCollisionShape(),btVector3(1,1,1),getDebugMode());
-
-                ++it;
-            }
-        }
-        */
-    }
-
-    // -------------------------------------------------------------------------
-    void CollisionsWorld::launchRay(CollisionRayResultCallback &rayresult, short int collisionFilterMask)
-    {
-        mWorld->rayTest(
-            OgreBtConverter::to(rayresult.getRayStartPoint()), 
-            OgreBtConverter::to(rayresult.getRayEndPoint()), 
-            *rayresult.getBulletRay ()
-			//, collisionFilterMask
-			);
-    }
+// -------------------------------------------------------------------------
+void CollisionsWorld::launchRay(CollisionRayResultCallback &rayresult, short int collisionFilterMask)
+{
+	mWorld->rayTest(
+		OgreBtConverter::to(rayresult.getRayStartPoint()), 
+		OgreBtConverter::to(rayresult.getRayEndPoint()), 
+		*rayresult.getBulletRay ()
+		//, collisionFilterMask
+		);
+}
 }
 
