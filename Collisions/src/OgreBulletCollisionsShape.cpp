@@ -50,7 +50,9 @@ namespace OgreBulletCollisions
     bool CollisionShape::drawWireFrame(DebugLines *wire, const Vector3 &pos, const Quaternion &quat) const
     {   
         if (mShape->isConvex ())
-            return drawConvexWireFrame (wire, pos, quat);
+			return drawConvexWireFrame (wire, pos, quat);
+		//else 
+		//	return drawWireFrame (wire, pos, quat);
 
         return false;
     }
@@ -58,114 +60,114 @@ namespace OgreBulletCollisions
     bool CollisionShape::drawConvexWireFrame(DebugLines *wire, const Vector3 &pos, const Quaternion &quat) const
     {   
         assert (mShape->isConvex ());
-        
-        const btConvexShape * const s = static_cast <btConvexShape *> (mShape);
 
-        Vector3 lastVec;
-        bool sideBeginning;
+        if (0 && mShape->getShapeType() <= CUSTOM_POLYHEDRAL_SHAPE_TYPE)
+		{
+			const btPolyhedralConvexShape * const polyshape = static_cast <btPolyhedralConvexShape *> (mShape);
 
-        #define getVertex(X,Y,Z) BtOgreConverter::to(s->localGetSupportingVertex (btVector3(X,Y,Z)))
+			const bool hasVecTransform = (pos != Vector3::ZERO);
+			const bool hasQuatTransform = (quat != Quaternion::IDENTITY);
+			const bool hasTransform = (hasVecTransform) || (hasQuatTransform);
 
-        const bool hasVecTransform = (pos != Vector3::ZERO);
-        const bool hasQuatTransform = (quat != Quaternion::IDENTITY);
-        const bool hasTransform = (hasVecTransform) || (hasQuatTransform);
+			btTransform trans ( OgreBulletCollisions::OgreBtConverter::to(quat), OgreBulletCollisions::OgreBtConverter::to(pos));
+			int i;
+			btVector3 a,b;
+			for (i=0;i<polyshape->getNumEdges();i++)
+			{
+				polyshape->getEdge(i, a, b);
 
-        Vector3 curVec;
-        size_t i = 0;
-        const int subDivisionCount = 1;
-        const float subDivide = 1.0f / subDivisionCount;
-        for (int x = -subDivisionCount; x <= subDivisionCount; x++)
-        {
-            for (int y = -subDivisionCount; y <= subDivisionCount; y++)
-            {
-                sideBeginning = true;
-                for (int z = -subDivisionCount; z <= subDivisionCount; z++)
-                {
-                    curVec = getVertex(x*subDivide, y*subDivide, z*subDivide);
-                    if (hasTransform)
-                    {
-                        // apply transformation
-                        if (hasQuatTransform) 
-                            curVec = quat * curVec;
-                        if (hasVecTransform) 
-                            curVec += pos;
-//                        if (hasVecTransform) 
-//                            curVec -= pos;
-//                        if (hasQuatTransform) 
-//                            curVec = quat * curVec;
-                    }
+				if (hasTransform)
+				{
+					a = trans * a;
+					b = trans * b;
+				}
 
-                    if (sideBeginning)
-                        sideBeginning = false;
-                    else
-                        wire->addLine (lastVec, curVec);
-                    lastVec = curVec;
+				 wire->addLine(
+					OgreBulletCollisions::BtOgreConverter::to(a), 
+					OgreBulletCollisions::BtOgreConverter::to(b)
+					);
 
-                    i++;
-                }
-            }
-        }
+			}
+		}
+		else
+		{
+			Vector3 lastVec;
+			bool sideBeginning;
+			const btConvexShape * const s = static_cast <btConvexShape *> (mShape);
 
+			btTransform trans ( OgreBulletCollisions::OgreBtConverter::to(quat), OgreBulletCollisions::OgreBtConverter::to(pos));
 
-        for (int x = -subDivisionCount; x <= subDivisionCount; x++)
-        {
-            for (int z = -subDivisionCount; z <= subDivisionCount; z++)
-            {
-                sideBeginning = true;
-                for (int y = -subDivisionCount; y <= subDivisionCount; y++)
-                {
-                    curVec = getVertex(x*subDivide, y*subDivide, z*subDivide);
-                    if (hasTransform)
-                    {
-                        // apply transformation
-                        if (hasVecTransform) 
-                            curVec -= pos;
-                        if (hasQuatTransform) 
-                            curVec = quat * curVec;
-                    }
+	#define getVertex(X,Y,Z) BtOgreConverter::to(trans * s->localGetSupportingVertex (btVector3(X,Y,Z)))
 
-                    if (sideBeginning)
-                        sideBeginning = false;
-                    else
-                        wire->addLine (lastVec, curVec);
-                    lastVec = curVec;
+			Vector3 curVec;
+			size_t i = 0;
+			const int subDivisionCount = 1;
+			const float subDivide = 1.0f / subDivisionCount;
+			for (int x = -subDivisionCount; x <= subDivisionCount; x++)
+			{
+				for (int y = -subDivisionCount; y <= subDivisionCount; y++)
+				{
+					sideBeginning = true;
+					for (int z = -subDivisionCount; z <= subDivisionCount; z++)
+					{
+						curVec = getVertex(x*subDivide, y*subDivide, z*subDivide);
 
-                    i++;
-                }
-            }
-        }
+						if (sideBeginning)
+							sideBeginning = false;
+						else
+							wire->addLine (lastVec, curVec);
+						lastVec = curVec;
+
+						i++;
+					}
+				}
+			}
 
 
+			for (int x = -subDivisionCount; x <= subDivisionCount; x++)
+			{
+				for (int z = -subDivisionCount; z <= subDivisionCount; z++)
+				{
+					sideBeginning = true;
+					for (int y = -subDivisionCount; y <= subDivisionCount; y++)
+					{
+						curVec = getVertex(x*subDivide, y*subDivide, z*subDivide);
 
-        for (int z = -subDivisionCount; z <= subDivisionCount; z++)
-        {
-            for (int y = -subDivisionCount; y <= subDivisionCount; y++)
-            {
-                sideBeginning = true;
-                for (int x = -subDivisionCount; x <= subDivisionCount; x++)
-                {
-                    curVec = getVertex(x*subDivide, y*subDivide, z*subDivide);
-                    if (hasTransform)
-                    {
-                        // apply transformation
-                        if (hasVecTransform) 
-                            curVec -= pos;
-                        if (hasQuatTransform) 
-                            curVec = quat * curVec;
-                    }
+						if (sideBeginning)
+							sideBeginning = false;
+						else
+							wire->addLine (lastVec, curVec);
+						lastVec = curVec;
 
-                    if (sideBeginning)
-                        sideBeginning = false;
-                    else
-                        wire->addLine (lastVec, curVec);
-                    lastVec = curVec;
+						i++;
+					}
+				}
+			}
 
-                    i++;
-                }
-            }
-        }
-#undef getVertex
 
+
+			for (int z = -subDivisionCount; z <= subDivisionCount; z++)
+			{
+				for (int y = -subDivisionCount; y <= subDivisionCount; y++)
+				{
+					sideBeginning = true;
+					for (int x = -subDivisionCount; x <= subDivisionCount; x++)
+					{
+						curVec = getVertex(x*subDivide, y*subDivide, z*subDivide);
+						
+
+						if (sideBeginning)
+							sideBeginning = false;
+						else
+							wire->addLine (lastVec, curVec);
+						lastVec = curVec;
+
+						i++;
+					}
+				}
+			}
+	#undef getVertex
+		}
         return true;
     }
 }

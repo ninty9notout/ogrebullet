@@ -35,8 +35,8 @@ http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 #include "Constraints/OgreBulletDynamicsRaycastVehicle.h"
 
-#include "GIMPACT/Bullet/btGImpactShape.h"
-#include "GIMPACT/Bullet/btGImpactCollisionAlgorithm.h"
+#include "BulletCollision/Gimpact/btGImpactShape.h"
+#include "BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h"
 
 using namespace Ogre;
 using namespace OgreBulletCollisions;
@@ -48,8 +48,7 @@ namespace OgreBulletDynamics
                 const Ogre::AxisAlignedBox &bounds,  
                 const Ogre::Vector3 &gravity,
                 bool init) :
-        CollisionsWorld(mgr, bounds, false),
-            mDebugDrawer(0)
+			 CollisionsWorld(mgr, bounds, false)
     {
         //btSequentialImpulseConstraintSolver
         //btSequentialImpulseConstraintSolver3
@@ -60,8 +59,8 @@ namespace OgreBulletDynamics
             mWorld = new btDiscreteDynamicsWorld(mDispatcher, mBroadphase, mConstraintsolver, &mDefaultCollisionConfiguration);
 			static_cast <btDiscreteDynamicsWorld *> (mWorld)->setGravity(btVector3(gravity.x,gravity.y,gravity.z));
 
-			btCollisionDispatcher * dispatcher = static_cast<btCollisionDispatcher *>(mWorld->getDispatcher());
-			btGImpactCollisionAlgorithm::registerAlgorithm(dispatcher);
+			//btCollisionDispatcher * dispatcher = static_cast<btCollisionDispatcher *>(mWorld->getDispatcher());
+			//btGImpactCollisionAlgorithm::registerAlgorithm(dispatcher);
 		}
 
     }
@@ -91,29 +90,70 @@ namespace OgreBulletDynamics
     {
         // Reset Debug Lines
         if (mDebugDrawer) 
-            mDebugDrawer->clear ();
+			mDebugDrawer->clear ();
+		if (mDebugContactPoints)  
+			mDebugContactPoints->clear ();
 
         static_cast <btDiscreteDynamicsWorld *> (mWorld)->stepSimulation(elapsedTime, maxSubSteps, fixedTimestep);
 
-        if (mDebugDrawer) 
-        {
-            // draw lines that step Simulation sent.
-            mDebugDrawer->draw();
+		if (mDebugContactPoints) 
+		{
+			///one way to draw all the contact points is iterating over contact manifolds / points:
+			const unsigned int  numManifolds = mWorld->getDispatcher()->getNumManifolds();
+			for (unsigned int i=0;i < numManifolds; i++)
+			{
+				btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
 
-            const bool drawFeaturesText = (mDebugDrawer->getDebugMode () & btIDebugDraw::DBG_DrawFeaturesText) != 0;
-            if (drawFeaturesText)
-            {
-                // on all bodies we have
-                // we get all shapes and draw more information
-                //depending on mDebugDrawer mode.
-                std::deque<Object*>::iterator it = mObjects.begin();
-                while (it != mObjects.end())
-                {
-                    //(*it)->drawFeaturesText();
-                    ++it;
-                }
-            }
-        }
+				btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
+				btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
+
+				contactManifold->refreshContactPoints(obA->getWorldTransform(),obB->getWorldTransform());
+
+				const unsigned int numContacts = contactManifold->getNumContacts();
+				for (unsigned int j = 0;j < numContacts; j++)
+				{
+					btManifoldPoint& pt = contactManifold->getContactPoint(j);
+
+					if (mShowDebugContactPoints)
+					{
+						btVector3 ptA = pt.getPositionWorldOnA();
+						btVector3 ptB = pt.getPositionWorldOnB();
+						btVector3 ptDistB = ptB  + pt.m_normalWorldOnB *100;
+
+						mDebugContactPoints->addLine(ptA.x(),ptA.y(),ptA.z(),
+							ptB.x(),ptB.y(),ptB.z());
+						mDebugContactPoints->addLine(ptB.x(),ptB.y(),ptB.z(),
+							ptDistB.x(),ptDistB.y(),ptDistB.z());
+					}
+				}
+				//you can un-comment out this line, and then all points are removed
+				//contactManifold->clearManifold();	
+			}
+			// draw lines that step Simulation sent.
+			mDebugContactPoints->draw();
+		}
+
+		if (mDebugDrawer) 
+		{
+			// draw lines that step Simulation sent.
+			mDebugDrawer->draw();
+
+
+
+			const bool drawFeaturesText = (mDebugDrawer->getDebugMode () & btIDebugDraw::DBG_DrawFeaturesText) != 0;
+			if (drawFeaturesText)
+			{
+				// on all bodies we have
+				// we get all shapes and draw more information
+				//depending on mDebugDrawer mode.
+				std::deque<Object*>::iterator it = mObjects.begin();
+				while (it != mObjects.end())
+				{
+					//(*it)->drawFeaturesText();
+					++it;
+				}
+			}
+		}
     }
     // -------------------------------------------------------------------------
     void DynamicsWorld::removeConstraint(TypedConstraint *constraint)

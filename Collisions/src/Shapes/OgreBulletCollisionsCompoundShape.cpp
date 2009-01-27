@@ -28,6 +28,7 @@ http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 #include "Utils/OgreBulletConverter.h"
 
 #include "Shapes/OgreBulletCollisionsCompoundShape.h"
+#include "Shapes/OgreBulletCollisionsConvexHullShape.h"
 
 using namespace Ogre;
 using namespace OgreBulletCollisions;
@@ -39,7 +40,33 @@ namespace OgreBulletCollisions
         CollisionShape()
     {
             mShape = new btCompoundShape();
-    }
+	}
+	//---------------------------------------------------------
+	CompoundCollisionShape::CompoundCollisionShape(btCompoundShape *shape):	
+		CollisionShape()
+	{
+		mShape = shape;
+		
+		// TODO : create a list of child ogre bullet collision shapes using child list, recursively		
+		btCompoundShape *cShapes = static_cast <btCompoundShape *> (mShape);
+		unsigned int numChildren = cShapes->getNumChildShapes();
+		for (unsigned int i = 0; i < numChildren; i++)	
+		{
+			CollisionShape *s = 0;
+			switch (cShapes->getChildList()[i].m_childShapeType)
+			{
+			case CONVEX_HULL_SHAPE_PROXYTYPE:
+				s = new ConvexHullCollisionShape(static_cast<btConvexHullShape*> (cShapes->getChildList()[i].m_childShape));
+				break;
+			//case :
+			//	break;
+			default :
+				break;
+			}
+			if (s)
+				mShapes.push_back (s);
+		}
+	}
     // -------------------------------------------------------------------------
     CompoundCollisionShape::~CompoundCollisionShape()
     {
@@ -51,11 +78,11 @@ namespace OgreBulletCollisions
         
         //localTrans.setIdentity();
         //localTrans effectively shifts the center of mass with respect to the chassis
-        localTrans.setOrigin (OgreBtConverter::to(pos));
-        localTrans.setRotation (OgreBtConverter::to(quat));
+		localTrans.setOrigin (OgreBtConverter::to(pos));
+		localTrans.setRotation (OgreBtConverter::to(quat));
 
         static_cast <btCompoundShape *> (mShape)->addChildShape(localTrans, shape->getBulletShape());
-        
+    
         mShapes.push_back (shape);
     }
     // -------------------------------------------------------------------------
@@ -64,6 +91,8 @@ namespace OgreBulletCollisions
         const Ogre::Quaternion &quat) const
     {
         bool isVisual = false;
+
+
         btCompoundShape * const myBtCompoundShape = static_cast <btCompoundShape *> (mShape);
         int numChildShapes = myBtCompoundShape->getNumChildShapes ();
 
@@ -88,6 +117,7 @@ namespace OgreBulletCollisions
                 isVisual = true;
         }
         return isVisual;
+		
     }
 }
 

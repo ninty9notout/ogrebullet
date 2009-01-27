@@ -16,7 +16,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\..\..\Ogre\Samples\Common\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(BULLET_HOME)\src&quot;;..\include;..\..\include;..\..\..\include;..\..\..\..\include;..\..\..\..\Collisions\include;..\..\..\..\Dynamics\include;..\..\..\..\..\..\Ogrenew\OgreMain\include;..\..\..\..\..\..\Ogrenew\Samples\Common\include"
+				AdditionalIncludeDirectories="&quot;$(BULLET_HOME)\src&quot;;&quot;$(BULLET_HOME)\Extras\ConvexDecomposition&quot;;..\include;..\..\include;..\..\..\include;..\..\..\..\include;..\..\..\..\Collisions\include;..\..\..\..\Dynamics\include;..\..\..\..\..\..\Ogre\OgreMain\include;..\..\..\..\..\..\Ogre\Samples\Common\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -64,10 +64,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib ois_static_d.lib OgreBulletCollisions_d.lib OgreBulletDynamics_d.lib libbulletcollision_d.lib libbulletdynamics_d.lib libbulletmath_d.lib"
+				AdditionalDependencies="OgreMain_d.lib ois_static_d.lib OgreBulletCollisions_d.lib OgreBulletDynamics_d.lib libbulletcollision_d.lib libbulletdynamics_d.lib libbulletmath_d.lib libconvexdecomposition_d.lib"
 				OutputFile="$(OutDir)/OgreBulletDynamicsDemo.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\lib\$(ConfigurationName)&quot;;..\..\..\..\..\..\Ogrenew\lib;&quot;$(BULLET_HOME)\out\$(ConfigurationName)8\libs&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\lib\$(ConfigurationName)&quot;;..\..\..\..\..\..\Ogre\lib;&quot;$(BULLET_HOME)\out\$(ConfigurationName)8\libs&quot;"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -99,12 +99,12 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(TargetPath) ..\..\..\..\..\..\Ogrenew\Samples\Common\bin\$(ConfigurationName)"
+				CommandLine="copy $(TargetPath) "
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\bin\$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\..\..\Ogre\Samples\Common\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -131,15 +131,16 @@
 				InlineFunctionExpansion="1"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="&quot;$(BULLET_HOME)\src&quot;;..\include;..\..\include;..\..\..\include;..\..\..\..\include;..\..\..\..\Collisions\include;..\..\..\..\Dynamics\include;..\..\..\..\..\..\Ogrenew\OgreMain\include;..\..\..\..\..\..\Ogrenew\Samples\Common\include"
+				AdditionalIncludeDirectories="&quot;$(BULLET_HOME)\src&quot;;&quot;$(BULLET_HOME)\Extras\ConvexDecomposition&quot;;..\include;..\..\include;..\..\..\include;..\..\..\..\include;..\..\..\..\Collisions\include;..\..\..\..\Dynamics\include;..\..\..\..\..\..\Ogre\OgreMain\include;..\..\..\..\..\..\Ogre\Samples\Common\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_PRECOMP"
-				StringPooling="true"
-				MinimalRebuild="true"
+				StringPooling="false"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="0"
 				SmallerTypeCheck="false"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
 				EnableFunctionLevelLinking="true"
+				EnableEnhancedInstructionSet="2"
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -157,10 +158,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib ois_static.lib OgreBulletCollisions.lib OgreBulletDynamics.lib libbulletcollision.lib libbulletdynamics.lib libbulletmath.lib"
+				AdditionalDependencies="OgreMain.lib ois_static.lib OgreBulletCollisions.lib OgreBulletDynamics.lib libbulletcollision.lib libbulletdynamics.lib libbulletmath.lib libconvexdecomposition.lib"
 				OutputFile="$(OutDir)/OgreBulletDynamicsDemo.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\lib\$(ConfigurationName)&quot;;..\..\..\..\..\..\Ogrenew\lib;&quot;$(BULLET_HOME)\out\$(ConfigurationName)8\libs&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\lib\$(ConfigurationName)&quot;;..\..\..\..\..\..\Ogre\lib;&quot;$(BULLET_HOME)\out\$(ConfigurationName)8\libs&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -192,7 +193,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(TargetPath) ..\..\..\..\..\..\Ogrenew\Samples\Common\bin\$(ConfigurationName)"
+				CommandLine="copy $(TargetPath) "
 			/>
 		</Configuration>
 	</Configurations>
@@ -214,6 +215,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\Primitives_Demo.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\Ragdoll_Demo.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\Terrain_Demo.cpp"
 				>
 			</File>
 			<File
@@ -260,6 +269,14 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Primitives_Demo.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\Ragdoll_Demo.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\Terrain_Demo.h"
 				>
 			</File>
 			<File

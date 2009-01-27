@@ -57,13 +57,6 @@ namespace OgreBulletDynamics
 
         void addRigidBody (RigidBody *rb, short collisionGroup, short collisionMask);
 
-        void setDebugDrawer(OgreBulletCollisions::DebugDrawer *debugdrawer)
-        {
-            mDebugDrawer = debugdrawer;
-            (static_cast <btDiscreteDynamicsWorld *> (mWorld))->setDebugDrawer(mDebugDrawer);
-        };
-
-        OgreBulletCollisions::DebugDrawer *getDebugDrawer(){return mDebugDrawer;};
 
         inline btDynamicsWorld * getBulletDynamicsWorld() const {return static_cast<btDynamicsWorld *> (mWorld);};
 
@@ -74,8 +67,6 @@ namespace OgreBulletDynamics
         void addVehicle(RaycastVehicle *v);
 
     private:
-        OgreBulletCollisions::DebugDrawer                 *mDebugDrawer;
-
         btConstraintSolver                                *mConstraintsolver;
 
         std::deque <TypedConstraint *>                    mConstraints;

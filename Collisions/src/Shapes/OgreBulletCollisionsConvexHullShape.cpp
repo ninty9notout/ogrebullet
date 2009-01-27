@@ -45,7 +45,13 @@ namespace OgreBulletCollisions
     CollisionShape()
     {
         mShape = new btConvexHullShape();
-    }
+	}
+	// -------------------------------------------------------------------------
+	ConvexHullCollisionShape::ConvexHullCollisionShape(btConvexHullShape *shape):	
+	CollisionShape()
+	{
+		mShape = shape;
+	}
     // -------------------------------------------------------------------------
     ConvexHullCollisionShape::~ConvexHullCollisionShape()
     {

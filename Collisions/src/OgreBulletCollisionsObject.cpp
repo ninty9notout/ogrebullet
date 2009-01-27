@@ -115,12 +115,12 @@ namespace OgreBulletCollisions
     // -------------------------------------------------------------------------
     void Object::setPosition(const btVector3 &pos)
     {
-        mRootNode->setPosition(pos[0], pos[1], pos[2]);
+		mRootNode->setPosition(pos[0], pos[1], pos[2]);
     }
     // -------------------------------------------------------------------------
     void Object::setOrientation(const btQuaternion &quat)
     {   
-        mRootNode->setOrientation(quat.getW(),quat.getX(), quat.getY(), quat.getZ());
+		mRootNode->setOrientation(quat.getW(),quat.getX(), quat.getY(), quat.getZ());
     }
     // -------------------------------------------------------------------------
     void Object::setTransform(const btTransform& worldTrans)
@@ -140,7 +140,11 @@ namespace OgreBulletCollisions
         mShapeNode->attachObject(this);
 
         mObject->setCollisionShape(shape->getBulletShape());
-        showDebugShape(mWorld->getShowDebugShapes());       
+        showDebugShape(mWorld->getShowDebugShapes()); 
+
+		mObject->getWorldTransform().setOrigin(btVector3(pos.x, pos.y, pos.z));
+		mObject->getWorldTransform().setRotation(btQuaternion(quat.x, quat.y, quat.z, quat.w));
+
     }
     // -------------------------------------------------------------------------
     //-----------------------------------------------------------------------

@@ -799,6 +799,7 @@ bool OgreBulletListener::frameEnded(Real elapsedTime)
     if ( mDrawContactPoints)
     {
         debugDrawer->setDrawContactPoints(!debugDrawer->doesDrawContactPoints());
+		mWorld->setShowDebugContactPoints(debugDrawer->doesDrawContactPoints());
         mDrawContactPoints = false;
     }
     if ( mNoDeactivation)
