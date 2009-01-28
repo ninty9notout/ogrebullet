@@ -77,7 +77,7 @@ namespace OgreBulletDynamics
 
 		// Now setup the constraints
 		btHingeConstraint* hingeC;
-		btConeTwistConstraint* coneC;
+		//btConeTwistConstraint* coneC;
 		btTransform localA, localB;
 
 		// for
