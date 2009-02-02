@@ -109,7 +109,7 @@ void DebugLines::clear()
 }
 //------------------------------------------------------------------------------------------------
 DebugLines::~DebugLines(void)
-{
+{ 
     clear();
 
     delete mRenderOp.vertexData;

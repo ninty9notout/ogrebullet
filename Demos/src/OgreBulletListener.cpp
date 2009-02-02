@@ -78,6 +78,26 @@ Ogre::ShadowTechnique convertToShadowTechnique(int i)
     }
 }
 // -------------------------------------------------------------------------
+int convertShadowTechniqueToInt(Ogre::ShadowTechnique i)
+{
+	switch(i)
+	{
+	case  SHADOWTYPE_NONE: return 0;
+	case  SHADOWDETAILTYPE_ADDITIVE: return 1;
+	case  SHADOWDETAILTYPE_MODULATIVE: return 2;
+	case  SHADOWDETAILTYPE_INTEGRATED: return 3;
+	case  SHADOWDETAILTYPE_STENCIL: return 4;
+	case  SHADOWDETAILTYPE_TEXTURE: return 5;
+	case  SHADOWTYPE_STENCIL_MODULATIVE: return 6;
+	case  SHADOWTYPE_STENCIL_ADDITIVE: return 7;
+	case  SHADOWTYPE_TEXTURE_MODULATIVE: return 8;
+	case  SHADOWTYPE_TEXTURE_ADDITIVE: return 9;
+	case  SHADOWTYPE_TEXTURE_ADDITIVE_INTEGRATED: return 10;
+	case  SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED: return 11;
+	default: return 0;
+	}
+}
+// -------------------------------------------------------------------------
 const Ogre::ColourValue g_minLightColour(0.2, 0.1, 0.0);
 const Ogre::ColourValue g_maxLightColour(0.5, 0.3, 0.1);
 // -------------------------------------------------------------------------
@@ -130,7 +150,7 @@ void OgreBulletListener::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBul
 
     /******************* CREATESHADOWS ***************************/
 #ifndef _DEBUG
-    mCurrentShadowTechnique = 9;//SHADOWTYPE_TEXTURE_ADDITIVE
+    mCurrentShadowTechnique = convertShadowTechniqueToInt(SHADOWTYPE_TEXTURE_ADDITIVE);
 
 	mSceneMgr->setShadowColour(ColourValue(0.5, 0.5, 0.5));
 
@@ -146,10 +166,29 @@ void OgreBulletListener::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBul
 		// but the precision doesn't work well
 
 	}
+	if (pxlFmt != Ogre::PF_L8)
+	{
+		String CUSTOM_CASTER_MATERIAL("Ogre/DepthShadowmap/Caster/Float");
+		String CUSTOM_RECEIVER_MATERIAL("Ogre/DepthShadowmap/Receiver/Float");
+		mSceneMgr->setShadowTextureSelfShadow(true);
+		mSceneMgr->setShadowTextureCasterMaterial(CUSTOM_CASTER_MATERIAL);
+		mSceneMgr->setShadowTextureReceiverMaterial(CUSTOM_RECEIVER_MATERIAL);
+	}
+
+	
+	/*
+	Ogre::LiSPSMShadowCameraSetup *mLiSPSMSetup = new Ogre::LiSPSMShadowCameraSetup();
+	mLiSPSMSetup->setUseAggressiveFocusRegion(true);
+	//mLiSPSMSetup->setUseSimpleOptimalAdjust(true);
+	mLiSPSMSetup->setOptimalAdjustFactor(1.1f);
+	mSceneMgr->setShadowCameraSetup(Ogre::ShadowCameraSetupPtr(mLiSPSMSetup));
+*/
+
+	mSceneMgr->setShadowTechnique(convertToShadowTechnique(mCurrentShadowTechnique));
 	if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(RSC_HWRENDER_TO_TEXTURE))
 	{
 		// In D3D, use a 1024x1024 shadow texture
-		mSceneMgr->setShadowTextureSettings(1024, 2, pxlFmt);
+		mSceneMgr->setShadowTextureSettings(2048, 2, pxlFmt);
 	}
 	else
 	{
@@ -157,25 +196,7 @@ void OgreBulletListener::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBul
 		mSceneMgr->setShadowTextureSettings(512, 2, pxlFmt);
 	}
 
-	if (pxlFmt != Ogre::PF_L8)
-	{
-		String CUSTOM_CASTER_MATERIAL("Ogre/DepthShadowmap/Caster/Float");
-		String CUSTOM_RECEIVER_MATERIAL("Ogre/DepthShadowmap/Receiver/Float");
-		mSceneMgr->setShadowTextureSelfShadow(true);
-		mSceneMgr->setShadowTextureCasterMaterial(CUSTOM_CASTER_MATERIAL);
-		mSceneMgr->setShadowTextureReceiverMaterial(CUSTOM_RECEIVER_MATERIAL + "/PCF");
-	}
 
-	Ogre::LiSPSMShadowCameraSetup *mLiSPSMSetup = new Ogre::LiSPSMShadowCameraSetup();
-	mLiSPSMSetup->setUseAggressiveFocusRegion(true);
-	//mLiSPSMSetup->setUseSimpleOptimalAdjust(true);
-	mLiSPSMSetup->setOptimalAdjustFactor(1.1f);
-	mSceneMgr->setShadowCameraSetup(Ogre::ShadowCameraSetupPtr(mLiSPSMSetup));
-
-
-
-
-    mSceneMgr->setShadowTechnique(convertToShadowTechnique(mCurrentShadowTechnique));
 #endif // _DEBUG
 
     /******************* CREATE Queries ***************************/
