@@ -33,6 +33,7 @@ AC_CONFIG_FILES([Makefile
  Dynamics/src/Makefile
  Dynamics/include/Makefile
  Dynamics/include/Constraints/Makefile
+ Dynamics/include/Prefab/Makefile
  OgreBullet.pc
  ])
 
