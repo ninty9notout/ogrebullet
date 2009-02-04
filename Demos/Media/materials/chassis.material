@@ -1,10 +1,11 @@
 material 23 - Default
 {
-	receive_shadows off
+	//receive_shadows off
 	technique
 	{
 		pass
 		{
+			scene_blend add
 			ambient 0.500000 0.500000 0.500000 1.000000
 			diffuse 0.470588 0.608627 0.737255 1.000000
 			specular 0.449020 0.449020 0.449020 1.000000 12.500000
@@ -20,7 +21,7 @@ material 23 - Default
 }
 material 19 - Default
 {
-	receive_shadows off
+	//receive_shadows off
 	technique
 	{
 		pass
@@ -40,7 +41,7 @@ material 19 - Default
 }
 material 21 - Default
 {
-	receive_shadows off
+	//receive_shadows off
 	technique
 	{
 		pass
@@ -60,7 +61,7 @@ material 21 - Default
 }
 material 14 - Default
 {
-	receive_shadows off
+	//receive_shadows off
 	technique
 	{
 		pass
@@ -80,7 +81,7 @@ material 14 - Default
 }
 material 22 - Default
 {
-	receive_shadows off
+	//receive_shadows off
 	technique
 	{
 		pass
@@ -100,7 +101,7 @@ material 22 - Default
 }
 material PAN
 {
-	receive_shadows off
+	//receive_shadows off
 	technique
 	{
 		pass

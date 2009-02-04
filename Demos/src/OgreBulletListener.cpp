@@ -172,17 +172,18 @@ void OgreBulletListener::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBul
 		String CUSTOM_RECEIVER_MATERIAL("Ogre/DepthShadowmap/Receiver/Float");
 		mSceneMgr->setShadowTextureSelfShadow(true);
 		mSceneMgr->setShadowTextureCasterMaterial(CUSTOM_CASTER_MATERIAL);
-		mSceneMgr->setShadowTextureReceiverMaterial(CUSTOM_RECEIVER_MATERIAL);
+		mSceneMgr->setShadowTextureReceiverMaterial(CUSTOM_RECEIVER_MATERIAL + "/PCF");
+		//mSceneMgr->setShadowTextureReceiverMaterial(CUSTOM_RECEIVER_MATERIAL);
 	}
 
 	
-	/*
+	
 	Ogre::LiSPSMShadowCameraSetup *mLiSPSMSetup = new Ogre::LiSPSMShadowCameraSetup();
 	mLiSPSMSetup->setUseAggressiveFocusRegion(true);
 	//mLiSPSMSetup->setUseSimpleOptimalAdjust(true);
 	mLiSPSMSetup->setOptimalAdjustFactor(1.1f);
 	mSceneMgr->setShadowCameraSetup(Ogre::ShadowCameraSetupPtr(mLiSPSMSetup));
-*/
+
 
 	mSceneMgr->setShadowTechnique(convertToShadowTechnique(mCurrentShadowTechnique));
 	if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(RSC_HWRENDER_TO_TEXTURE))
