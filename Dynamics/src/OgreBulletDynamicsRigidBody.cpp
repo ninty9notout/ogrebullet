@@ -119,7 +119,27 @@ namespace OgreBulletDynamics
 
         mObject = body;
 		getDynamicsWorld()->addRigidBody(this, mCollisionGroup, mCollisionMask);
-    }
+	}
+	// -------------------------------------------------------------------------
+    void RigidBody::setStaticShape(btScaledBvhTriangleMeshShape *shape,
+        const float      bodyRestitution,
+        const float      bodyFriction,
+        const Vector3 &pos,
+        const Quaternion &quat)
+    {
+        //mState = new ObjectState(this);
+
+        btRigidBody *body = new btRigidBody(0.0, 0, shape);
+
+        body->setRestitution(bodyRestitution);
+        body->setFriction(bodyFriction);
+
+        body->getWorldTransform().setOrigin(btVector3(pos.x, pos.y, pos.z));
+        body->getWorldTransform().setRotation(btQuaternion(quat.x, quat.y, quat.z, quat.w));
+
+        mObject = body;
+      getDynamicsWorld()->addRigidBody(this, mCollisionGroup, mCollisionMask);
+   }		
     // -------------------------------------------------------------------------
     void RigidBody::setStaticShape(OgreBulletCollisions::CollisionShape *shape,
         const float      bodyRestitution,
