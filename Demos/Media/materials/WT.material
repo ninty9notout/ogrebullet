@@ -4,7 +4,7 @@ material DT__default__
 	{
 		pass
 		{
-			lighting off
+			//lighting off
 			diffuse vertexcolour
 		}
 	}
@@ -15,7 +15,7 @@ material Material/SOLID/TEX/box.jpg/VertCol
 	{
 		pass
 		{
-			diffuse vertexcolour
+			//diffuse vertexcolour
 			specular 0.500000 0.500000 0.500000 12.500000
 			texture_unit
 			{
@@ -25,13 +25,13 @@ material Material/SOLID/TEX/box.jpg/VertCol
 	}
 }
 
-material 1 - Default
+material "1 - Default"
 {
     technique
 	{
 		pass
 		{
-			diffuse vertexcolour
+			//diffuse vertexcolour
 			specular 0.500000 0.500000 0.500000 12.500000
 			texture_unit
 			{
