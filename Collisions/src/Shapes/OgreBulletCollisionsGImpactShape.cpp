@@ -69,6 +69,8 @@ namespace OgreBulletCollisions
 		unsigned int *_indices,
 		unsigned int int_index_count) : CollisionShape(), mTriMesh(0)
 	{
+
+#ifndef BVH
 		mTriMesh = new btTriangleMesh();
 
 		unsigned int numFaces = int_index_count / 3;
@@ -90,7 +92,70 @@ namespace OgreBulletCollisions
 
 		btGImpactMeshShape * trimesh = new btGImpactMeshShape(mTriMesh);
 		trimesh->setLocalScaling(btVector3(1, 1, 1));
+		trimesh->setMargin(0.0f);
 		trimesh->updateBound();
+#else
+
+		btTriangleIndexVertexArray *m_indexVertexArrays = new btTriangleIndexVertexArray(
+			int_index_count,
+			_indices,
+			4,
+			_vertex_count,
+			(btScalar*) &_vertices[0][0], 
+			12);
+
+		bool useQuantizedAabbCompression = true;
+
+		//comment out the next line to read the BVH from disk (first run the demo once to create the BVH)
+#define SERIALIZE_TO_DISK 1
+#ifdef SERIALIZE_TO_DISK
+		btVector3 aabbMin(-1000,-1000,-1000),aabbMax(1000,1000,1000);
+
+		btBvhTriangleMeshShape * trimeshShape  = new btBvhTriangleMeshShape(m_indexVertexArrays,useQuantizedAabbCompression,aabbMin,aabbMax);
+		
+		///we can serialize the BVH data 
+		void* buffer = 0;
+		int numBytes = trimeshShape->getOptimizedBvh()->calculateSerializeBufferSize();
+		buffer = btAlignedAlloc(numBytes,16);
+		bool swapEndian = false;
+		trimeshShape->getOptimizedBvh()->serialize(buffer,numBytes,swapEndian);
+		FILE* file = fopen("bvh.bin","wb");
+		fwrite(buffer,1,numBytes,file);
+		fclose(file);
+		btAlignedFree(buffer);
+
+
+
+#else
+
+		btBvhTriangleMeshShape *trimesh  = new btBvhTriangleMeshShape(m_indexVertexArrays,useQuantizedAabbCompression,false);
+
+		char* fileName = "bvh.bin";
+
+		FILE* file = fopen(fileName,"rb");
+		int size=0;
+		btOptimizedBvh* bvh = 0;
+
+		if (fseek(file, 0, SEEK_END) || (size = ftell(file)) == EOF || fseek(file, 0, SEEK_SET)) {        /* File operations denied? ok, just close and return failure */
+			printf("Error: cannot get filesize from %s\n", fileName);
+			exit(0);
+		} else
+		{
+
+			fseek(file, 0, SEEK_SET);
+
+			int buffersize = size+btOptimizedBvh::getAlignmentSerializationPadding();
+
+			void* buffer = btAlignedAlloc(buffersize,16);
+			int read = fread(buffer,1,size,file);
+			fclose(file);
+			bool swapEndian = false;
+			bvh = btOptimizedBvh::deSerializeInPlace(buffer,buffersize,swapEndian);
+		}
+
+		trimesh->setOptimizedBvh(bvh);
+#endif
+#endif
 		mShape = trimesh;
 	}
 

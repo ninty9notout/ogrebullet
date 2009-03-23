@@ -74,5 +74,43 @@ namespace OgreBulletDynamics
         }
     }
     // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	ActionInterface::ActionInterface(DynamicsWorld *world) :
+	mActionInterface (0),
+		mWorld (world),
+		mBodyA (0),
+		mBodyB (0)
+	{
+	}
+	// -------------------------------------------------------------------------
+	ActionInterface::ActionInterface(RigidBody *bodyA) :
+	mActionInterface(0),
+		mWorld(bodyA->getDynamicsWorld()),
+		mBodyA (bodyA),
+		mBodyB (0)
+	{
+		mBodyA = bodyA;
+	}
+	// -------------------------------------------------------------------------
+	ActionInterface::ActionInterface(RigidBody *bodyA, RigidBody *bodyB) :
+	mActionInterface(0),
+		mWorld(bodyA->getDynamicsWorld()),
+		mBodyA (bodyA),
+		mBodyB (bodyB)
+	{
+		assert (bodyA->getDynamicsWorld() == bodyB->getDynamicsWorld());
+		mBodyA = bodyA;
+		mBodyB = bodyB;
+	}
+	// -------------------------------------------------------------------------
+	ActionInterface::~ActionInterface()
+	{
+		if (mActionInterface)
+		{
+			//assert (mWorld->isConstraintRegistered (this) == false);
+			delete mActionInterface;
+		}
+	}
+	// -------------------------------------------------------------------------
 
 }

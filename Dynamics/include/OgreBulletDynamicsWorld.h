@@ -69,7 +69,8 @@ namespace OgreBulletDynamics
     private:
         btConstraintSolver                                *mConstraintsolver;
 
-        std::deque <TypedConstraint *>                    mConstraints;
+		std::deque <TypedConstraint *>                    mConstraints;
+		std::deque <ActionInterface *>                    mActionInterface;
     };
 }
 #endif //_OGREBULLETDYNAMICS_DynamicWorld_H

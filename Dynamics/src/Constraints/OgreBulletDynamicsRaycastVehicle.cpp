@@ -68,7 +68,7 @@ namespace OgreBulletDynamics
     RaycastVehicle::RaycastVehicle(WheeledRigidBody *body,  
                                 VehicleTuning *vt,
                                 VehicleRayCaster *caster) :
-        TypedConstraint(body),
+        ActionInterface(body),
         mTuning(vt),
         mRayCaster(caster)
     {
@@ -80,7 +80,7 @@ namespace OgreBulletDynamics
                 body->getBulletRigidBody (), 
                 mRayCaster->getBulletVehicleRayCaster()
                 );
-        mConstraint = v;
+        mActionInterface = v;
         mWorld->addVehicle(this);
         body->setVehicle (this);
     }
@@ -106,7 +106,7 @@ namespace OgreBulletDynamics
                                   const Ogre::Real wheelFriction,
                                   const Ogre::Real rollInfluence)
     {
-        btRaycastVehicle *v = static_cast<btRaycastVehicle *> (mConstraint);
+        btRaycastVehicle *v = static_cast<btRaycastVehicle *> (mActionInterface);
 
         mWheelsInfo.push_back (
             &v->addWheel(OgreBulletCollisions::OgreBtConverter::to(connectionPoint),
@@ -140,7 +140,7 @@ namespace OgreBulletDynamics
     // -------------------------------------------------------------------------
     void RaycastVehicle::setWheelsAttached()
     {
-        btRaycastVehicle *v = static_cast<btRaycastVehicle *> (mConstraint);
+        btRaycastVehicle *v = static_cast<btRaycastVehicle *> (mActionInterface);
         for (int i=0; i < v->getNumWheels(); i++)
         {
             btWheelInfo& wheel = v->getWheelInfo(i);

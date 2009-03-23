@@ -180,7 +180,7 @@ namespace OgreBulletDynamics
     void DynamicsWorld::addVehicle(RaycastVehicle *v)
     {
         getBulletDynamicsWorld()->addVehicle(v->getBulletVehicle ());
-        mConstraints.push_back(static_cast <TypedConstraint *> (v));
+        mActionInterface.push_back(static_cast <ActionInterface *> (v));
 
         //mVehicles.push_back(v);
     }

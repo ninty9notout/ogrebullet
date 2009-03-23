@@ -75,7 +75,7 @@ namespace OgreBulletCollisions
 		getCollisionWorld()->removeObject(this);
 
         delete mObject;        
-        delete mShape;
+        //delete mShape;
         delete mState;
         delete mDebugShape;
     }
