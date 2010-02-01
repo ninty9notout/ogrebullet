@@ -53,7 +53,7 @@ namespace OgreBulletCollisions
 		}
 
         mShape = new btMultiSphereShape(
-            OgreBtConverter::to(inertiaHalfExtents),
+            //OgreBtConverter::to(inertiaHalfExtents),
             (btVector3 *) btPositions,
             (const btScalar *) radi,
             numSpheres);
