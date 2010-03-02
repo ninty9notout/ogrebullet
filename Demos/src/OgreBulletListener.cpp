@@ -109,14 +109,14 @@ const float      gDynamicBodyRestitution = 0.6f;
 const float      gDynamicBodyFriction    = 0.6f;
 const float      gDynamicBodyMass        = 1.0f;
 
-const Vector3    gCubeBodyBounds      = Vector3 (1, 1, 1);
-const Vector3    gCylinderBodyBounds  = Vector3 (0.5, 1, 0.5); 
-const Vector3    gConeBodyBounds      = Vector3 (1, 1, 1);
+const Ogre::Vector3    gCubeBodyBounds      = Ogre::Vector3 (1, 1, 1);
+const Ogre::Vector3    gCylinderBodyBounds  = Ogre::Vector3 (0.5, 1, 0.5); 
+const Ogre::Vector3    gConeBodyBounds      = Ogre::Vector3 (1, 1, 1);
 const Real       gSphereBodyBounds    = 1.0f;
 // -------------------------------------------------------------------------
 OgreBulletListener::OgreBulletListener() :    
 mCameraMove (0.1f),
-mCameraTrans (Vector3::ZERO),
+mCameraTrans (Ogre::Vector3::ZERO),
 mCamera(0),
 mRoot(0),
 mSceneMgr(0),
@@ -142,7 +142,7 @@ void OgreBulletListener::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBul
     mRoot = root;
     mWindow = win;
     mApplication = application;
-    mCameraTrans = Vector3::ZERO;
+    mCameraTrans = Ogre::Vector3::ZERO;
 
     mGuiListener = new OgreBulletGuiListener(this, win);
 
@@ -246,7 +246,7 @@ void OgreBulletListener::setBasicLight()
 	mLight->setType(Light::LT_SPOTLIGHT);
 	mLight->setPosition(100.0, 80.5,-10.0);
 	mLight->setSpotlightRange(Degree(30), Degree(50));
-	Vector3 dir;
+	Ogre::Vector3 dir;
 	dir = -mLight->getPosition();
 	dir.normalise();
 	mLight->setDirection(dir);
@@ -441,7 +441,7 @@ void OgreBulletListener::button0Pressed()
         {
             mPickedBody = body;
             mPickedBody->disableDeactivation();		
-            const Vector3 localPivot (body->getCenterOfMassPivot(pickPos));
+            const Ogre::Vector3 localPivot (body->getCenterOfMassPivot(pickPos));
             OgreBulletDynamics::PointToPointConstraint *p2p  = 
                 new OgreBulletDynamics::PointToPointConstraint(body, localPivot);
 
@@ -449,7 +449,7 @@ void OgreBulletListener::button0Pressed()
 
             //save mouse position for dragging
             mOldPickingPos = pickPos;
-            const Vector3 eyePos(mCamera->getDerivedPosition());
+            const Ogre::Vector3 eyePos(mCamera->getDerivedPosition());
             mOldPickingDist  = (pickPos - eyePos).length();
 
             //very weak constraint for picking
@@ -525,7 +525,7 @@ void OgreBulletListener::button0Released()
         mPickedBody = 0;	
 
         getDebugLines();
-        mDebugRayLine->addLine (Vector3::ZERO, Vector3::ZERO);	
+        mDebugRayLine->addLine (Ogre::Vector3::ZERO, Ogre::Vector3::ZERO);	
         mDebugRayLine->draw();  
         mGuiListener->showMouse(); 
     }
@@ -708,7 +708,7 @@ void OgreBulletListener::keyReleased(BULLET_KEY_CODE key)
     }
 }
 // -------------------------------------------------------------------------
-OgreBulletDynamics::RigidBody* OgreBulletListener::getBodyUnderCursorUsingBullet(Vector3 &intersectionPoint, Ray &rayTo)
+OgreBulletDynamics::RigidBody* OgreBulletListener::getBodyUnderCursorUsingBullet(Ogre::Vector3 &intersectionPoint, Ray &rayTo)
 {
     rayTo = mCamera->getCameraToViewportRay (mInputListener->getAbsMouseX(), mInputListener->getAbsMouseY());
 
@@ -728,7 +728,7 @@ OgreBulletDynamics::RigidBody* OgreBulletListener::getBodyUnderCursorUsingBullet
     return 0;
 }
 // -------------------------------------------------------------------------
-OgreBulletDynamics::RigidBody* OgreBulletListener::getBodyUnderCursorUsingOgre(Vector3 &intersectionPoint, Ray &rayTo)
+OgreBulletDynamics::RigidBody* OgreBulletListener::getBodyUnderCursorUsingOgre(Ogre::Vector3 &intersectionPoint, Ray &rayTo)
 {
     rayTo = mCamera->getCameraToViewportRay (mInputListener->getAbsMouseX(), mInputListener->getAbsMouseY());
 
@@ -888,7 +888,7 @@ void OgreBulletListener::throwDynamicObject(BULLET_KEY_CODE key)
     case KC_B: 
         if ( checkIfEnoughPlaceToAddObject(trowDist))
         {
-            const Vector3 vec (mCamera->getDerivedPosition());
+            const Ogre::Vector3 vec (mCamera->getDerivedPosition());
             OgreBulletDynamics::RigidBody *body = addCube("cube", vec, Quaternion(0,0,0,1), 
                 gCubeBodyBounds, gDynamicBodyRestitution, gDynamicBodyFriction, gDynamicBodyMass);
 
@@ -900,7 +900,7 @@ void OgreBulletListener::throwDynamicObject(BULLET_KEY_CODE key)
     case KC_N: 
         if ( checkIfEnoughPlaceToAddObject(trowDist))
         {
-            const Vector3 vec (mCamera->getDerivedPosition());
+            const Ogre::Vector3 vec (mCamera->getDerivedPosition());
             OgreBulletDynamics::RigidBody *body = addSphere("sphere", vec, Quaternion(0,0,0,1), 
                 gSphereBodyBounds, 
                 gDynamicBodyRestitution, gDynamicBodyFriction, gDynamicBodyMass);
@@ -913,7 +913,7 @@ void OgreBulletListener::throwDynamicObject(BULLET_KEY_CODE key)
     case KC_H: 
         if ( checkIfEnoughPlaceToAddObject(trowDist))
         {
-            const Vector3 vec (mCamera->getDerivedPosition());
+            const Ogre::Vector3 vec (mCamera->getDerivedPosition());
             OgreBulletDynamics::RigidBody *body = addCylinder("cylinder", vec, Quaternion(0,0,0,1), 
                 gCylinderBodyBounds, 
                 gDynamicBodyRestitution, gDynamicBodyFriction, gDynamicBodyMass);
@@ -926,7 +926,7 @@ void OgreBulletListener::throwDynamicObject(BULLET_KEY_CODE key)
     case KC_G : 
         if ( checkIfEnoughPlaceToAddObject(trowDist))
         {
-            const Vector3 vec (mCamera->getDerivedPosition());
+            const Ogre::Vector3 vec (mCamera->getDerivedPosition());
             OgreBulletDynamics::RigidBody *body = addCone("cone", vec, Quaternion(0,0,0,1), 
                 gConeBodyBounds, 
                 gDynamicBodyRestitution, gDynamicBodyFriction, gDynamicBodyMass);
@@ -947,7 +947,7 @@ void OgreBulletListener::dropDynamicObject(BULLET_KEY_CODE key)
     case KC_J: 
         if ( checkIfEnoughPlaceToAddObject(dropDist))
         {
-            const Vector3 vec (mCamera->getDerivedPosition());
+            const Ogre::Vector3 vec (mCamera->getDerivedPosition());
             OgreBulletDynamics::RigidBody *body = addCube("cube", 
                 vec + mCamera->getDerivedDirection().normalisedCopy() * 10, 
                 Quaternion(0,0,0,1), 
@@ -958,7 +958,7 @@ void OgreBulletListener::dropDynamicObject(BULLET_KEY_CODE key)
     case KC_K: 
         if ( checkIfEnoughPlaceToAddObject(dropDist))
         {
-            const Vector3 vec (mCamera->getDerivedPosition());
+            const Ogre::Vector3 vec (mCamera->getDerivedPosition());
             OgreBulletDynamics::RigidBody *body = addSphere("sphere", 
                 vec + mCamera->getDerivedDirection().normalisedCopy() * 10, 
                 Quaternion(0,0,0,1), 
@@ -970,7 +970,7 @@ void OgreBulletListener::dropDynamicObject(BULLET_KEY_CODE key)
     case KC_U : 
         if ( checkIfEnoughPlaceToAddObject(dropDist))
         {
-            const Vector3 vec (mCamera->getDerivedPosition());
+            const Ogre::Vector3 vec (mCamera->getDerivedPosition());
             OgreBulletDynamics::RigidBody *body = addCylinder("Cylinder", vec, Quaternion(0,0,0,1), 
                 gCylinderBodyBounds, 
                 gDynamicBodyRestitution, gDynamicBodyFriction, gDynamicBodyMass);
@@ -980,7 +980,7 @@ void OgreBulletListener::dropDynamicObject(BULLET_KEY_CODE key)
     case KC_I: 
         if ( checkIfEnoughPlaceToAddObject(dropDist))
         {
-            const Vector3 vec (mCamera->getDerivedPosition());
+            const Ogre::Vector3 vec (mCamera->getDerivedPosition());
             OgreBulletDynamics::RigidBody *body = addCone("Cone", 
                 vec + mCamera->getDerivedDirection().normalisedCopy() * 10, 
                 Quaternion(0,0,0,1), 
@@ -1002,7 +1002,7 @@ void OgreBulletListener::initWorld(const Ogre::Vector3 &gravityVector,
 
     mWorld->setDebugDrawer(debugDrawer);
 
-    SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode("debugDrawer", Vector3::ZERO);
+    SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode("debugDrawer", Ogre::Vector3::ZERO);
     node->attachObject (static_cast <SimpleRenderable *> (debugDrawer));
 
 
@@ -1113,7 +1113,7 @@ RigidBody *OgreBulletListener::addCylinder(const Ogre::String instanceName,
 
     entity->setMaterialName("Bullet/box");
 
-    CylinderCollisionShape *sceneCubeShape = new CylinderCollisionShape(size, Vector3::UNIT_X);
+    CylinderCollisionShape *sceneCubeShape = new CylinderCollisionShape(size, Ogre::Vector3::UNIT_X);
 
     RigidBody *defaultBody = new RigidBody(
         "defaultCylinderRigid" + StringConverter::toString(mNumEntitiesInstanced), 
@@ -1150,7 +1150,7 @@ RigidBody *OgreBulletListener::addCone(const Ogre::String instanceName,
 
     entity->setMaterialName("Bullet/box");
 
-    ConeCollisionShape *sceneCubeShape = new ConeCollisionShape(size.x, size.y, Vector3::UNIT_Y);
+    ConeCollisionShape *sceneCubeShape = new ConeCollisionShape(size.x, size.y, Ogre::Vector3::UNIT_Y);
 
     RigidBody *defaultBody = new RigidBody(
         "defaultConeRigid" + StringConverter::toString(mNumEntitiesInstanced), 
@@ -1206,9 +1206,9 @@ RigidBody *OgreBulletListener::addStaticPlane( const Ogre::Real bodyRestitution,
     int i = 0;
     StaticGeometry* s;
     s = mSceneMgr->createStaticGeometry("StaticFloor");
-    s->setRegionDimensions(Vector3(160.0, 100.0, 160.0));
+    s->setRegionDimensions(Ogre::Vector3(160.0, 100.0, 160.0));
     // Set the region origin so the center is at 0 world
-    s->setOrigin(Vector3::ZERO);
+    s->setOrigin(Ogre::Vector3::ZERO);
     for (Real z = -80.0;z <= 80.0;z += 20.0)
     {
         for (Real x = -80.0;x <= 80.0;x += 20.0)
@@ -1220,14 +1220,14 @@ RigidBody *OgreBulletListener::addStaticPlane( const Ogre::Real bodyRestitution,
             entity->setQueryFlags (STATIC_GEOMETRY_QUERY_MASK);
             //entity->setUserObject(_plane);
             entity->setCastShadows(false);
-            s->addEntity(entity, Vector3(x,0,z));
+            s->addEntity(entity, Ogre::Vector3(x,0,z));
         }
     }
     s->build();
     //SceneNode* mPlaneNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(name);
 
 
-    CollisionShape *Shape = new StaticPlaneCollisionShape (Vector3(0,1,0), 0);
+    CollisionShape *Shape = new StaticPlaneCollisionShape (Ogre::Vector3(0,1,0), 0);
 
     RigidBody *defaultPlaneBody = new RigidBody(
         "Plane" + StringConverter::toString(mNumEntitiesInstanced), 

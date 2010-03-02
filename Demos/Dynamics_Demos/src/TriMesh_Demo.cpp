@@ -23,7 +23,7 @@ using namespace OgreBulletCollisions;
 using namespace OgreBulletDynamics;
 
 // -------------------------------------------------------------------------
-const Vector3    CameraStart            = Vector3(0,-9,1);
+const Ogre::Vector3    CameraStart            = Ogre::Vector3(0,-9,1);
 // -------------------------------------------------------------------------
 
 
@@ -53,8 +53,8 @@ void Trimesh_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
     mCamera->setAspectRatio(
         Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
     mCamera->setPosition(CameraStart);
-    mCamera->rotate(Vector3(1,0,0), Degree(90));
-    mCamera->setFixedYawAxis(true, Vector3::UNIT_Z);
+    mCamera->rotate(Ogre::Vector3(1,0,0), Degree(90));
+    mCamera->setFixedYawAxis(true, Ogre::Vector3::UNIT_Z);
 
 
     OgreBulletListener::init(root, win, application);
@@ -67,14 +67,14 @@ void Trimesh_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
     mSceneMgr->setAmbientLight(ColourValue(0.75, 0.75, 0.75));
 
     mSunLight = mSceneMgr->createLight("Sun");
-    mSunLight->setPosition(CameraStart + Vector3(0,0,15));
+    mSunLight->setPosition(CameraStart + Ogre::Vector3(0,0,15));
     mSunLight->setType(Light::LT_DIRECTIONAL);
     mSunLight->setDirection(-0.40824828, -0.40824828, -0.81649655);
     mSunLight->setCastShadows(true);
     mSunLight->setSpecularColour(0.5,0.5,0.3);
 
     mLight = mSceneMgr->createLight("Spot");
-    mLight->setPosition(CameraStart + Vector3(0,0,15));
+    mLight->setPosition(CameraStart + Ogre::Vector3(0,0,15));
     mLight->setType(Light::LT_SPOTLIGHT);
     mLight->setDirection(-0.40824828, -0.40824828, -0.81649655);
     mLight->setCastShadows(true);
@@ -87,13 +87,13 @@ void Trimesh_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
 
     // ------------------------
     // Start Bullet
-    initWorld(Vector3 (0, 0, -9.81));
+    initWorld(Ogre::Vector3 (0, 0, -9.81));
 
     // ------------------------
     // Add the trimesh
     addStaticTrimesh("sceneMesh",
         "RoomComplex.mesh",
-        Vector3(0,0,19), 
+        Ogre::Vector3(0,0,19), 
         Quaternion::IDENTITY,
         0.1f, 
         0.8f);   

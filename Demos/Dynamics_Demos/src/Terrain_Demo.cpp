@@ -56,12 +56,12 @@ using namespace OgreBulletDynamics;
 	static float   gMaxSuspensionTravelCm = 500.0;
 	static float   gFrictionSlip = 10.5;
 
-	static const Vector3    CameraStart            = Vector3(0, 25, 0);
+	static const Ogre::Vector3    CameraStart            = Ogre::Vector3(0, 25, 0);
 	// -------------------------------------------------------------------------
-	static const Vector3   CarPosition             = Vector3(15, 3,-15);
+	static const Ogre::Vector3   CarPosition             = Ogre::Vector3(15, 3,-15);
 
 	static const float terrain_height = 45;
-	static const Vector3 terrain_Shift = Vector3(750, terrain_height, 750);
+	static const Ogre::Vector3 terrain_Shift = Ogre::Vector3(750, terrain_height, 750);
 
 
 #define CUBE_HALF_EXTENTS 1
@@ -117,7 +117,7 @@ void Terrain_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
     mCamera = mSceneMgr->createCamera("Cam");
     //mCamera->setFOVy(Degree(90));
     mCamera->setNearClipDistance(0.1);
-    mCamera->setFarClipDistance(100);
+    mCamera->setFarClipDistance(1000);
     Viewport *vp = win->addViewport(mCamera);
     vp->setBackgroundColour(ColourValue(0,0,0));
     // Alter the camera aspect ratio to match the viewport
@@ -151,49 +151,31 @@ void Terrain_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
     //addStaticPlane(0.3, 0.8);
 
 	{
-		int page_size;
-		Vector3 terrainScale;
-		String terrainfileName;
+		Ogre::ConfigFile config;
 
-		{
-			Ogre::ConfigFile config;
-			Ogre::String val;
+		config.loadFromResourceSystem(terrain_cfg, ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME, "=", true);
 
-			config.loadFromResourceSystem(terrain_cfg, ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME, "=", true);
+        unsigned page_size = Ogre::StringConverter::parseUnsignedInt(config.getSetting( "PageSize" ));
 
-			val = config.getSetting( "PageSize" );
-			assert( !val.empty() );
-			page_size = atoi( val.c_str() );
+        Ogre::Vector3 terrainScale(Ogre::StringConverter::parseReal( config.getSetting( "PageWorldX" ) ) / (page_size-1),
+                                   Ogre::StringConverter::parseReal( config.getSetting( "MaxHeight" ) ),
+                                   Ogre::StringConverter::parseReal( config.getSetting( "PageWorldZ" ) ) / (page_size-1));
 
-			val = config.getSetting( "PageWorldX" );
-			assert( !val.empty() );
-			terrainScale.x = atof( val.c_str() ) / page_size;
+        Ogre::String terrainfileName = config.getSetting( "Heightmap.image" );
 
-			val = config.getSetting( "MaxHeight" );
-			assert( !val.empty() );
-			terrainScale.y = atof( val.c_str() );
+        float *heights = new float [page_size*page_size];
 
-			val = config.getSetting( "PageWorldZ" );
-			assert( !val.empty() );
-			terrainScale.z = atof( val.c_str() ) / page_size;
-
-			val = config.getSetting( "Heightmap.image" );
-			assert( !val.empty() );
-			terrainfileName = val;
-		}
-
-
-		float *heights = new float [page_size*page_size];
-		{
-			Ogre::Image terrainHeightMap;
-			terrainHeightMap.load(terrainfileName, ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
-
-			const uchar * const __restrict imagedata = terrainHeightMap.getData();
-			for (int src_pos = 0; src_pos < page_size*page_size;  src_pos += 1)
-			{
-				heights[src_pos] = (((float)(imagedata[src_pos])) / 255);
-			}
-		}	
+        Ogre::Image terrainHeightMap;
+        terrainHeightMap.load(terrainfileName, Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME);
+        
+        for(unsigned y = 0; y < page_size; ++y)
+        {
+            for(unsigned x = 0; x < page_size; ++x)
+            {
+                Ogre::ColourValue color = terrainHeightMap.getColourAt(x, y, 0);
+                heights[x + y * page_size] = color.r;
+            }
+        }
 
 		mTerrainShape = new HeightmapCollisionShape (
 			page_size, 
@@ -209,10 +191,11 @@ void Terrain_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
 		const float      terrainBodyRestitution  = 0.1f;
 		const float      terrainBodyFriction     = 0.8f;
 
-		Ogre::Vector3 terrainShiftPos(page_size, 0.0, page_size);
-		//Ogre::Vector3 terrainShiftPos(terrainScale.x, 0.0, terrainScale.z);
-		terrainShiftPos *= terrainScale;
-		terrainShiftPos /= 2;
+        Ogre::Vector3 terrainShiftPos( (terrainScale.x * (page_size - 1) / 2), \
+                                        0,
+                                       (terrainScale.z * (page_size - 1) / 2));
+
+        terrainShiftPos.y = terrainScale.y / 2 * terrainScale.y;
 
 		Ogre::SceneNode* pTerrainNode = mSceneMgr->getRootSceneNode ()->createChildSceneNode ();
 		defaultTerrainBody->setStaticShape (pTerrainNode, mTerrainShape, terrainBodyRestitution, terrainBodyFriction, terrainShiftPos);
@@ -225,34 +208,34 @@ void Terrain_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
 
 
     // create obstacle in front of car
-    addCube("obstacle", Vector3(13,  -5.25, -5) + terrain_Shift ,  Quaternion(Radian(Degree(22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(15,  -5.25, -5) + terrain_Shift ,  Quaternion(Radian(Degree(22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(17,  -5.25, -5) + terrain_Shift ,  Quaternion(Radian(Degree(22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(13,  -5.25, -5) + terrain_Shift ,  Quaternion(Radian(Degree(22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(15,  -5.25, -5) + terrain_Shift ,  Quaternion(Radian(Degree(22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(17,  -5.25, -5) + terrain_Shift ,  Quaternion(Radian(Degree(22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
 
-    addCube("obstacle", Vector3(13,  -5.25, -10) + terrain_Shift , Quaternion(Radian(Degree(-22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(15,  -5.25, -10) + terrain_Shift , Quaternion(Radian(Degree(-22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(17,  -5.25, -10) + terrain_Shift , Quaternion(Radian(Degree(-22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(13,  -5.25, -10) + terrain_Shift , Quaternion(Radian(Degree(-22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(15,  -5.25, -10) + terrain_Shift , Quaternion(Radian(Degree(-22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(17,  -5.25, -10) + terrain_Shift , Quaternion(Radian(Degree(-22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
 
     // create obstacle a bit aside
-    addCube("obstacle", Vector3(-2,  0, -5) + terrain_Shift ,  Quaternion(Radian(Degree(45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(0,  0, -5) + terrain_Shift ,   Quaternion(Radian(Degree(45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(2,  0, -5) + terrain_Shift ,   Quaternion(Radian(Degree(45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(-2,  0, -5) + terrain_Shift ,  Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(0,  0, -5) + terrain_Shift ,   Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(2,  0, -5) + terrain_Shift ,   Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
 
-    addCube("obstacle", Vector3(-2,  0, -10) + terrain_Shift , Quaternion(Radian(Degree(-45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(0,  0, -10) + terrain_Shift ,  Quaternion(Radian(Degree(-45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(2,  0, -10) + terrain_Shift ,  Quaternion(Radian(Degree(-45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(-2,  0, -10) + terrain_Shift , Quaternion(Radian(Degree(-45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(0,  0, -10) + terrain_Shift ,  Quaternion(Radian(Degree(-45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(2,  0, -10) + terrain_Shift ,  Quaternion(Radian(Degree(-45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
 
     // create obstacle just for fun
-    addCube("obstacle", Vector3(25, -10, -25) + terrain_Shift , Quaternion(Radian(Degree(45.0)), Vector3::UNIT_Z), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(25, -10, -27) + terrain_Shift , Quaternion(Radian(Degree(45.0)), Vector3::UNIT_Z), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(25, -10, -29) + terrain_Shift , Quaternion(Radian(Degree(45.0)), Vector3::UNIT_Z), Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(25, -10, -25) + terrain_Shift , Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_Z), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(25, -10, -27) + terrain_Shift , Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_Z), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(25, -10, -29) + terrain_Shift , Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_Z), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
 
 
 
 
     /// create vehicle
     {
-		const Vector3 chassisShift(0, 1.0, 0);
+		const Ogre::Vector3 chassisShift(0, 1.0, 0);
 		float connectionHeight = 0.7f;
 
         mChassis = mSceneMgr->createEntity(
@@ -276,7 +259,7 @@ void Terrain_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
 
 		CompoundCollisionShape* compound = new CompoundCollisionShape();
 
-		BoxCollisionShape* chassisShape = new BoxCollisionShape(Vector3(1.f,0.75f,2.1f));
+		BoxCollisionShape* chassisShape = new BoxCollisionShape(Ogre::Vector3(1.f,0.75f,2.1f));
         compound->addChildShape(chassisShape, chassisShift); 
 
         mCarChassis = new WheeledRigidBody("carChassis", mWorld);
@@ -308,8 +291,8 @@ void Terrain_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
 
             mVehicle->setCoordinateSystem(rightIndex, upIndex, forwardIndex);
 
-            Vector3 wheelDirectionCS0(0,-1,0);
-            Vector3 wheelAxleCS(-1,0,0);
+            Ogre::Vector3 wheelDirectionCS0(0,-1,0);
+            Ogre::Vector3 wheelAxleCS(-1,0,0);
 
             for (size_t i = 0; i < 4; i++)
             {
@@ -331,7 +314,7 @@ void Terrain_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
             {
                 bool isFrontWheel = true;
 
-                Vector3 connectionPointCS0 (
+                Ogre::Vector3 connectionPointCS0 (
                     CUBE_HALF_EXTENTS-(0.3*gWheelWidth),
                     connectionHeight,
                     2*CUBE_HALF_EXTENTS-gWheelRadius);
@@ -346,7 +329,7 @@ void Terrain_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
                     gWheelRadius,
                     isFrontWheel, gWheelFriction, gRollInfluence);
 
-                connectionPointCS0 = Vector3(
+                connectionPointCS0 = Ogre::Vector3(
                     -CUBE_HALF_EXTENTS+(0.3*gWheelWidth),
                     connectionHeight,
                     2*CUBE_HALF_EXTENTS-gWheelRadius);
@@ -362,7 +345,7 @@ void Terrain_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
                     isFrontWheel, gWheelFriction, gRollInfluence);
 
 
-                connectionPointCS0 = Vector3(
+                connectionPointCS0 = Ogre::Vector3(
                     -CUBE_HALF_EXTENTS+(0.3*gWheelWidth),
                     connectionHeight,
                     -2*CUBE_HALF_EXTENTS+gWheelRadius);
@@ -377,7 +360,7 @@ void Terrain_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
                     gWheelRadius,
                     isFrontWheel, gWheelFriction, gRollInfluence);
 
-                connectionPointCS0 = Vector3(
+                connectionPointCS0 = Ogre::Vector3(
                     CUBE_HALF_EXTENTS-(0.3*gWheelWidth),
                     connectionHeight,
                     -2*CUBE_HALF_EXTENTS+gWheelRadius);

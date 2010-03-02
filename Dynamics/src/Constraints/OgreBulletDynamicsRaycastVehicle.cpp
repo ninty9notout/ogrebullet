@@ -43,8 +43,12 @@ namespace OgreBulletDynamics
     // -------------------------------------------------------------------------
     VehicleRayCaster::~VehicleRayCaster()
     {
-        delete mBulletVehicleRayCaster;
-    }   
+        if(mBulletVehicleRayCaster != 0)
+        {
+            delete mBulletVehicleRayCaster;
+            mBulletVehicleRayCaster = 0;
+        }
+    }
     // -------------------------------------------------------------------------
     VehicleTuning::VehicleTuning(const Ogre::Real suspensionStiffness,
 				const Ogre::Real suspensionCompression,
@@ -63,6 +67,11 @@ namespace OgreBulletDynamics
     // -------------------------------------------------------------------------
     VehicleTuning::~VehicleTuning()
     {
+        if(mBulletTuning != 0)
+        {
+            delete mBulletTuning;
+            mBulletTuning = 0;
+        }
     }
     // -------------------------------------------------------------------------
     RaycastVehicle::RaycastVehicle(WheeledRigidBody *body,  

@@ -25,7 +25,7 @@ using namespace OgreBulletCollisions;
 using namespace OgreBulletDynamics;
 
 // -------------------------------------------------------------------------
-const Vector3    CameraStart            = Vector3(13,4.5,0);
+const Ogre::Vector3    CameraStart            = Ogre::Vector3(13,4.5,0);
 // -------------------------------------------------------------------------
 
 
@@ -58,8 +58,8 @@ void Primitives_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBullet
     mCamera->setPosition(CameraStart);
     //mCamera->lookAt(0, 0.5, 0);
 
-    //mCamera->rotate(Vector3(1,0,0), Degree(90));
-    //mCamera->setFixedYawAxis(true, Vector3::UNIT_Z);
+    //mCamera->rotate(Ogre::Vector3(1,0,0), Degree(90));
+    //mCamera->setFixedYawAxis(true, Ogre::Vector3::UNIT_Z);
 
     OgreBulletListener::init(root, win, application);
 

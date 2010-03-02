@@ -47,7 +47,7 @@ const size_t sMaxRagdoll = 10;
 const size_t sMaxRagdoll = 30;
 #endif //_DEBUG
 // -------------------------------------------------------------------------
-const Vector3    CameraStart            = Vector3(0,-9,1);
+const Ogre::Vector3    CameraStart            = Ogre::Vector3(0,-9,1);
 // -------------------------------------------------------------------------
 
 typedef std::list<Entity *> RagDollList;
@@ -101,8 +101,8 @@ void Ragdoll_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletApp
     mCamera->setAspectRatio(
         Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
     mCamera->setPosition(CameraStart);
-    mCamera->rotate(Vector3(1,0,0), Degree(90));
-    mCamera->setFixedYawAxis(true, Vector3::UNIT_Z);
+    mCamera->rotate(Ogre::Vector3(1,0,0), Degree(90));
+    mCamera->setFixedYawAxis(true, Ogre::Vector3::UNIT_Z);
 
     OgreBulletListener::init(root, win, application);
 
@@ -170,7 +170,7 @@ bool Ragdoll_Demo::frameStarted(Ogre::Real elapsedTime)
 			(*iRag)->getAnimationState(ragdollAnimation[b->sSelectedMesh])->addTime(time * _animation_speed);
 
 			(*iRag)->getParentNode ()->translate(
-				(*iRag)->getParentNode ()->getOrientation() * (Vector3::UNIT_Z * time * 2.5));
+				(*iRag)->getParentNode ()->getOrientation() * (Ogre::Vector3::UNIT_Z * time * 2.5));
 
 		}
 	}

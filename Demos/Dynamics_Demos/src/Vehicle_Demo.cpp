@@ -54,9 +54,9 @@ static float   gSuspensionRestLength = 0.6;
 static float   gMaxSuspensionTravelCm = 500.0;
 static float   gFrictionSlip = 10.5;
 
-static const Vector3    CameraStart            = Vector3(0, 25, 0);
+static const Ogre::Vector3    CameraStart            = Ogre::Vector3(0, 25, 0);
 // -------------------------------------------------------------------------
-static const Vector3   CarPosition             = Vector3(15, 3,-15);
+static const Ogre::Vector3   CarPosition             = Ogre::Vector3(15, 3,-15);
 
 #define CUBE_HALF_EXTENTS 1
 
@@ -146,34 +146,34 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
 
 
     // create obstacle in front of car
-    addCube("obstacle", Vector3(13,  -0.25, -5),  Quaternion(Radian(Degree(22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(15,  -0.25, -5),  Quaternion(Radian(Degree(22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(17,  -0.25, -5),  Quaternion(Radian(Degree(22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(13,  -0.25, -5),  Quaternion(Radian(Degree(22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(15,  -0.25, -5),  Quaternion(Radian(Degree(22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(17,  -0.25, -5),  Quaternion(Radian(Degree(22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
 
-    addCube("obstacle", Vector3(13,  -0.25, -10), Quaternion(Radian(Degree(-22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(15,  -0.25, -10), Quaternion(Radian(Degree(-22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(17,  -0.25, -10), Quaternion(Radian(Degree(-22.5)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(13,  -0.25, -10), Quaternion(Radian(Degree(-22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(15,  -0.25, -10), Quaternion(Radian(Degree(-22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(17,  -0.25, -10), Quaternion(Radian(Degree(-22.5)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
 
     // create obstacle a bit aside
-    addCube("obstacle", Vector3(-2,  0, -5),  Quaternion(Radian(Degree(45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(0,  0, -5),   Quaternion(Radian(Degree(45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(2,  0, -5),   Quaternion(Radian(Degree(45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(-2,  0, -5),  Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(0,  0, -5),   Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(2,  0, -5),   Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
 
-    addCube("obstacle", Vector3(-2,  0, -10), Quaternion(Radian(Degree(-45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(0,  0, -10),  Quaternion(Radian(Degree(-45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(2,  0, -10),  Quaternion(Radian(Degree(-45.0)), Vector3::UNIT_X), Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(-2,  0, -10), Quaternion(Radian(Degree(-45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(0,  0, -10),  Quaternion(Radian(Degree(-45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(2,  0, -10),  Quaternion(Radian(Degree(-45.0)), Ogre::Vector3::UNIT_X), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
 
     // create obstacle just for fun
-    addCube("obstacle", Vector3(25, 0, -25), Quaternion(Radian(Degree(45.0)), Vector3::UNIT_Z), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(25, 0, -27), Quaternion(Radian(Degree(45.0)), Vector3::UNIT_Z), Vector3(1, 1, 1), 0.3, 0.8, 0);
-    addCube("obstacle", Vector3(25, 0, -29), Quaternion(Radian(Degree(45.0)), Vector3::UNIT_Z), Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(25, 0, -25), Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_Z), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(25, 0, -27), Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_Z), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
+    addCube("obstacle", Ogre::Vector3(25, 0, -29), Quaternion(Radian(Degree(45.0)), Ogre::Vector3::UNIT_Z), Ogre::Vector3(1, 1, 1), 0.3, 0.8, 0);
 
 
 
 
     /// create vehicle
 	{
-		const Vector3 chassisShift(0, 1.0, 0);
+		const Ogre::Vector3 chassisShift(0, 1.0, 0);
 		float connectionHeight = 0.7f;
 
         mChassis = mSceneMgr->createEntity(
@@ -195,7 +195,7 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
 
 
 
-        BoxCollisionShape* chassisShape = new BoxCollisionShape(Vector3(1.f,0.75f,2.1f));
+        BoxCollisionShape* chassisShape = new BoxCollisionShape(Ogre::Vector3(1.f,0.75f,2.1f));
         CompoundCollisionShape* compound = new CompoundCollisionShape();
         compound->addChildShape(chassisShape, chassisShift); 
 
@@ -222,8 +222,8 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
 
             mVehicle->setCoordinateSystem(rightIndex, upIndex, forwardIndex);
 
-            Vector3 wheelDirectionCS0(0,-1,0);
-            Vector3 wheelAxleCS(-1,0,0);
+            Ogre::Vector3 wheelDirectionCS0(0,-1,0);
+            Ogre::Vector3 wheelAxleCS(-1,0,0);
 
             for (size_t i = 0; i < 4; i++)
             {
@@ -245,7 +245,7 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
             {
                 bool isFrontWheel = true;
 
-                Vector3 connectionPointCS0 (
+                Ogre::Vector3 connectionPointCS0 (
                     CUBE_HALF_EXTENTS-(0.3*gWheelWidth),
                     connectionHeight,
                     2*CUBE_HALF_EXTENTS-gWheelRadius);
@@ -260,7 +260,7 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
                     gWheelRadius,
                     isFrontWheel, gWheelFriction, gRollInfluence);
 
-                connectionPointCS0 = Vector3(
+                connectionPointCS0 = Ogre::Vector3(
                     -CUBE_HALF_EXTENTS+(0.3*gWheelWidth),
                     connectionHeight,
                     2*CUBE_HALF_EXTENTS-gWheelRadius);
@@ -276,7 +276,7 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
                     isFrontWheel, gWheelFriction, gRollInfluence);
 
 
-                connectionPointCS0 = Vector3(
+                connectionPointCS0 = Ogre::Vector3(
                     -CUBE_HALF_EXTENTS+(0.3*gWheelWidth),
                     connectionHeight,
                     -2*CUBE_HALF_EXTENTS+gWheelRadius);
@@ -291,7 +291,7 @@ void Vehicles_Demo::init(Ogre::Root *root, Ogre::RenderWindow *win, OgreBulletAp
                     gWheelRadius,
                     isFrontWheel, gWheelFriction, gRollInfluence);
 
-                connectionPointCS0 = Vector3(
+                connectionPointCS0 = Ogre::Vector3(
                     CUBE_HALF_EXTENTS-(0.3*gWheelWidth),
                     connectionHeight,
                     -2*CUBE_HALF_EXTENTS+gWheelRadius);
