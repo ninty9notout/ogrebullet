@@ -44,7 +44,6 @@ namespace OgreBulletCollisions
     Object::Object(const String &name, CollisionsWorld *world, bool init)
         :	
         MovableObject(name),
-        UserDefinedObject(),
         mWorld(world),
         mShape(0),
         mState(0),
@@ -89,10 +88,11 @@ namespace OgreBulletCollisions
             {
                 assert (mDebugNode == 0);
                 mDebugNode = mRootNode->createChildSceneNode(mName + "DebugShape");
+                mDebugNode->setInheritScale(false);
                 mDebugNode->attachObject (mDebugShape);
             }
         }
-        else if (mDebugShape)
+        else if (show != true && mDebugShape != 0)
         {
             if (mDebugShape->getIsVisual ())
             {
