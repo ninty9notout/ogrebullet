@@ -9,7 +9,6 @@
 
 #include "BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h"
 #include "BulletCollision/CollisionShapes/btTriangleCallback.h"
-#include "BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h"
 
 namespace OgreBulletCollisions
 {
