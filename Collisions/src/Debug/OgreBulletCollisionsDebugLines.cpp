@@ -47,6 +47,13 @@ DebugLines::DebugLines() : SimpleRenderable()
 
     if (!_materials_created)
     {
+        StringVector resourceGroups = ResourceGroupManager::getSingletonPtr()->getResourceGroups();
+
+        if(std::find(resourceGroups.begin(), resourceGroups.end(), "OgreBulletCollisions") == resourceGroups.end())
+        {
+            ResourceGroupManager::getSingletonPtr()->createResourceGroup("OgreBulletCollisions");
+        }
+
         MaterialPtr red = MaterialManager::getSingleton().create("OgreBulletCollisionsDebugLines/Disabled","OgreBulletCollisions");
         MaterialPtr green = MaterialManager::getSingleton().create("OgreBulletCollisionsDebugLines/Enabled","OgreBulletCollisions");
         MaterialPtr blue = MaterialManager::getSingleton().create("OgreBulletCollisionsDebugLines/Static","OgreBulletCollisions");
