@@ -1,4 +1,3 @@
-OgreBullet_LGPL.txt
 OgreBullet_licence.txt
 OgreBullet_readme.txt
 
