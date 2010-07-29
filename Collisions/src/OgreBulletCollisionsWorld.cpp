@@ -47,7 +47,7 @@ using namespace OgreBulletCollisions;
 namespace OgreBulletCollisions
 {
 	// -------------------------------------------------------------------------
-	CollisionsWorld::CollisionsWorld(SceneManager *scn, const AxisAlignedBox &bounds, bool init, bool set32bitsAxisSweep):
+	CollisionsWorld::CollisionsWorld(SceneManager *scn, const AxisAlignedBox &bounds, bool init, bool set32bitsAxisSweep, unsigned int maxHandles):
 mScnMgr(scn),
 mBounds(bounds),
 mShowDebugShapes(false),
@@ -61,13 +61,20 @@ mDebugDrawer(0)
 	{
 		mBroadphase = new bt32BitAxisSweep3(
 			OgreBtConverter::to(bounds.getMinimum()), 
-			OgreBtConverter::to(bounds.getMaximum()));
+			OgreBtConverter::to(bounds.getMaximum()), maxHandles);
 	}
 	else
 	{
+        if(maxHandles > USHRT_MAX)
+        {
+            Ogre::String logNote("Exceeded the maximum number of handles for btAxisSweep3. Max = USHRT_MAX. Resetting maxHandles to USHRT_MAX in OgreBulletCollisions::CollisionsWorld::CollisionsWorld().");
+            Ogre::LogManager::getSingleton().logMessage(logNote);
+            maxHandles = USHRT_MAX;
+        }
+
 		mBroadphase = new btAxisSweep3(
 			OgreBtConverter::to(bounds.getMinimum()), 
-			OgreBtConverter::to(bounds.getMaximum()));
+			OgreBtConverter::to(bounds.getMaximum()), static_cast<unsigned short>(maxHandles));
 	}
 
 	// if not called by a inherited class
@@ -116,6 +123,7 @@ void CollisionsWorld::setShowDebugContactPoints(bool show)
 		n->detachObject (mDebugContactPoints);
 		n->getParentSceneNode()->removeAndDestroyChild("DebugContactPoints");
 		delete mDebugContactPoints;
+        mDebugContactPoints = 0;
 		mShowDebugContactPoints = false;
 		return;
 	}
