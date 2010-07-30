@@ -52,8 +52,8 @@ A basic test framework that minimize code in each test scene listener.
     #define BULLET_GETY         e->getY()
 
 #else
-
-    #include "OIS/OIS.h"
+// NOTICE: You may need to change this line to <OIS.h> if you build OIS from source.
+    #include "OIS\OIS.h"
     namespace OIS
     {
         class Keyboard;

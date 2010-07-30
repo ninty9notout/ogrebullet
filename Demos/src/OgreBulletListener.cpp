@@ -995,7 +995,7 @@ void OgreBulletListener::initWorld(const Ogre::Vector3 &gravityVector,
                                    const Ogre::AxisAlignedBox &bounds)
 {
     // Start Bullet
-    mWorld = new DynamicsWorld (mSceneMgr, bounds, gravityVector);
+    mWorld = new DynamicsWorld (mSceneMgr, bounds, gravityVector, true, true, 10000);
 
     // add Debug info display tool
     DebugDrawer *debugDrawer = new DebugDrawer();
