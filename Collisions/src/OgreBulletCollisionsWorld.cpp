@@ -28,6 +28,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
+#include <limits.h>
+
 #include "OgreBulletCollisions.h"
 
 #include "Debug/OgreBulletCollisionsDebugDrawer.h"
