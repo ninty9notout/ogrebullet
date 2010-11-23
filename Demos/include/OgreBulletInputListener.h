@@ -32,7 +32,7 @@ A basic test framework that minimize code in each test scene listener.
     #define BULLET_MOUSE_EVENT                          Ogre::MouseEvent*
     #define BULLET_KC                                   Ogre::KC
     #define BULLET_LISTENER_IMPLEMENTATION_RETURN       void
-    #define BULLET_LISTENER_IMPLEMENTATION_RETURN_CODE  
+    #define BULLET_LISTENER_IMPLEMENTATION_RETURN_CODE
 
 
     #define BULLET_GETKEY       e->getKey()
@@ -46,14 +46,18 @@ A basic test framework that minimize code in each test scene listener.
     #define BULLET_BUTTON2_UP e->getButtonID() == e->BUTTON2_MASK
 
     #define BULLET_GETRELX      e->getRelX()
-    #define BULLET_GETRELY      e->getRelY() 
+    #define BULLET_GETRELY      e->getRelY()
 
     #define BULLET_GETX         e->getX()
     #define BULLET_GETY         e->getY()
 
 #else
 // NOTICE: You may need to change this line to <OIS.h> if you build OIS from source.
-    #include "OIS\OIS.h"
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+    #include "OIS.h"
+#else
+    #include "OIS.h"
+#endif
     namespace OIS
     {
         class Keyboard;
@@ -92,10 +96,10 @@ class OgreBulletListener;
 /*
 The base Test class, is also able to listen for collisions and thus change the contact properties
 */
-class OgreBulletInputListener : 
+class OgreBulletInputListener :
 #if (OGRE_VERSION <  ((1 << 16) | (3 << 8) | 0))
-    public Ogre::MouseMotionListener, 
-    public Ogre::MouseListener,  
+    public Ogre::MouseMotionListener,
+    public Ogre::MouseListener,
     public Ogre::KeyListener
 #else
     public OIS::MouseListener,
@@ -106,7 +110,7 @@ public:
     static const Ogre::Real KEY_DELAY;
 
 	// Constructor/destructor
-    OgreBulletInputListener(OgreBulletListener * ogreBulletListener, 
+    OgreBulletInputListener(OgreBulletListener * ogreBulletListener,
                             Ogre::RenderWindow *win);
     virtual ~OgreBulletInputListener(){};
 
@@ -146,9 +150,9 @@ public:
     bool getButton1Pressed() const {return mButton1Pressed;}
     bool getButton2Pressed() const {return mButton2Pressed;}
 
-    
+
 protected:
-    
+
 
    Ogre::Real              mRelX;
    Ogre::Real              mRelY;

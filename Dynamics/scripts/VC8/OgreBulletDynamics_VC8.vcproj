@@ -212,6 +212,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\Constraints\OgreBulletDynamics6DofSpringConstraint.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\Constraints\OgreBulletDynamicsHingeConstraint.cpp"
 					>
 				</File>
@@ -267,6 +271,10 @@
 				>
 				<File
 					RelativePath="..\..\include\Constraints\OgreBulletDynamics6DofConstraint.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Constraints\OgreBulletDynamics6DofSpringConstraint.h"
 					>
 				</File>
 				<File

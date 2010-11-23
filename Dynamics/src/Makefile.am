@@ -13,6 +13,7 @@ libOgreBulletDyn_la_SOURCES = \
  OgreBulletDynamicsRigidBody.cpp \
  OgreBulletDynamicsWorld.cpp \
  Constraints/OgreBulletDynamics6DofConstraint.cpp \
+ Constraints/OgreBulletDynamics6DofSpringConstraint.cpp \
  Constraints/OgreBulletDynamicsConeTwistConstraint.cpp \
  Constraints/OgreBulletDynamicsHingeConstraint.cpp \
  Constraints/OgreBulletDynamicsPoint2pointConstraint.cpp \
